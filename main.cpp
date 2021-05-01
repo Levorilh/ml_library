@@ -31,11 +31,56 @@ float predict_linear_model_classification(float *model, int model_length, float 
 
 
 int main() {
-//    std::cout << "Hello, World!" << std::end
     srand(time(nullptr));
 
+    // TEST REGRESSION
+/*
+    int input_dim = 1;
+    int total_input_dim = 3;
+
+    float flattened_dataset_inputs[] = {
+            -5,
+            4,
+            6,
+    };
+
+    float dataset_expected_outputs[] = {
+            5.2,
+            7,
+            8.3
+    };
+
+
+    float * model = create_linear_model(input_dim);
+
+    std::cout << "Before training:" << std::endl;
+    float predicted_outputs[total_input_dim];
+    for(int i =0; i<total_input_dim; i++){
+        float input_sub[1];
+        input_sub[0] = dataset_expected_outputs[i];
+        predicted_outputs[i] = predict_linear_model_regression(model,input_dim,input_sub);
+        std::cout << predicted_outputs[i] << std::endl;
+    }
+
+
+    train_regression_pseudo_inverse_linear_model(model, input_dim, flattened_dataset_inputs, (total_input_dim / input_dim), dataset_expected_outputs);
+
+
+    std::cout << "After training:" << std::endl;
+    for(int i =0; i<3; i++){
+        float input_sub[1];
+        input_sub[0] = dataset_expected_outputs[i];
+        predicted_outputs[i] = predict_linear_model_regression(model,input_dim,input_sub);
+        std::cout <<  predicted_outputs[i] << " for :" << dataset_expected_outputs[i]  << std::endl;
+    }
+
+    destroy_linear_model(model);
+
+    return 0;
+*/
+    // TEST CLASSIFICATION
+
     int input_dim = 2;
-    int model_length = input_dim+1;
 
     float *model = create_linear_model(input_dim);
 
@@ -59,7 +104,7 @@ int main() {
         input_sub[0]  = input[i];
         input_sub[1]  = input[i+1];
 
-        float predict_before_train = predict_linear_model_classification(model, model_length, input_sub);
+        float predict_before_train = predict_linear_model_classification(model, input_dim, input_sub);
         std::cout << predict_before_train << std::endl;
     }
 
@@ -76,17 +121,18 @@ int main() {
         input_sub[0]  = input[i];
         input_sub[1]  = input[i+1];
 
-        float predict_before_train = predict_linear_model_classification(model, model_length, input_sub);
+        float predict_before_train = predict_linear_model_classification(model, input_dim, input_sub);
         std::cout << predict_before_train << std::endl;
     }
 
     destroy_linear_model(model);
     return 0;
+
 }
 
 float *create_linear_model(int input_dim) {
     auto *result = (float *) malloc(sizeof(float) * input_dim);
-    for (int i = 0; i < input_dim; i++) {
+    for (int i = 0; i < input_dim + 1; i++) {
         result[i] = ((rand() % 2001) / 1000.0) - 1.;
     }
     return result;
@@ -111,7 +157,7 @@ void train_classification_rosenblatt_rule_linear_model(float *model,
              Xk_index < input_dim; Xk_index++, flattened_dataset_inputs_index++) {
             Xk[Xk_index] = flattened_dataset_inputs[flattened_dataset_inputs_index];
         }
-        float gXk = predict_linear_model_classification(model, input_dim + 1, Xk);
+        float gXk = predict_linear_model_classification(model, input_dim, Xk);
         model[0] += alpha * (Yk - gXk) * 1.0;    // bias correction
         for (int i = 1; i < (input_dim + 1) ; i++) {
             model[i] += alpha * (Yk - gXk) * Xk[i - 1];
@@ -135,27 +181,32 @@ void train_regression_pseudo_inverse_linear_model(float *model,
     for (int i = 0; i < samples_count; i++) {
         X(i, 0) = 1;
         for (int j = 1; j < input_dim + 1; j++) {
-            X(i, j) = flattened_dataset_inputs[i * samples_count + j];
+            X(i, j) = flattened_dataset_inputs[i * input_dim + j - 1];
+            //std::cout << "X(" << i << "," << j << ") = " << X(i, j) << " " << i * input_dim + j - 1 << std::endl;
         }
     }
 
     MatrixXd Y(samples_count, 1);
     for (int i = 0; i < samples_count; i++) {
         Y(i, 0) = flattened_dataset_expected_outputs[i];
+        //std::cout << "Y(" << i << "," << 0 << ") = " << Y(i, 0) << std::endl;
     }
 
-    Eigen:
+    //Eigen:
     MatrixXd W = ((X.transpose() * X).inverse() * X.transpose()) * Y;
 
-    for (int i = 0; i < input_dim; i++) {
+
+    //std::cout << "Poids:" << std::endl;
+    for (int i = 0; i < input_dim + 1; i++) {
         model[i] = W(i, 0);
+        //std::cout << "W(" << i << "," << 0 << ") = " << model[i] << std::endl;
     }
 }
 
 
 float predict_linear_model_regression(float *model, int model_length, float *sample_inputs) {
     float result = model[0] * 1.0;    // bias
-    for (int i = 1; i < model_length; i++) {
+    for (int i = 1; i < model_length + 1; i++) {
         result += model[i] * sample_inputs[i - 1];
     }
     return result;
