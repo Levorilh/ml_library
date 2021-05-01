@@ -111,7 +111,7 @@ void train_classification_rosenblatt_rule_linear_model(float *model,
              Xk_index < input_dim; Xk_index++, flattened_dataset_inputs_index++) {
             Xk[Xk_index] = flattened_dataset_inputs[flattened_dataset_inputs_index];
         }
-        float gXk = predict_linear_model_classification(model, input_dim, Xk);
+        float gXk = predict_linear_model_classification(model, input_dim + 1, Xk);
         model[0] += alpha * (Yk - gXk) * 1.0;    // bias correction
         for (int i = 1; i < (input_dim + 1) ; i++) {
             model[i] += alpha * (Yk - gXk) * Xk[i - 1];
