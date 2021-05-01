@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/library.dir/Linear_model.cpp.obj"
+  "CMakeFiles/library.dir/MLP_model.cpp.obj"
   "CMakeFiles/library.dir/main.cpp.obj"
   "liblibrary.dll.a"
   "library.exe"
