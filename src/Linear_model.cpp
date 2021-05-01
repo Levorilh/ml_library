@@ -1,35 +1,10 @@
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <ctime>
-#include "Eigen/Dense"
+#include "headers/Linear_model.h"
 
-using Eigen::MatrixXd;
-using namespace std;
+DLLEXPORT float predict_linear_model_regression(float *model, int model_length, float *sample_inputs);
 
-float *create_linear_model(int);
+DLLEXPORT float predict_linear_model_classification(float *model, int model_length, float *sample_inputs);
 
-void destroy_linear_model(float *);
-
-void train_regression_pseudo_inverse_linear_model(float *model,
-                                                  int input_dim,
-                                                  float *flattened_dataset_inputs,
-                                                  int samples_count,
-                                                  float *flattened_dataset_expected_outputs);
-
-void train_classification_rosenblatt_rule_linear_model(float *model,
-                                                       int input_dim,
-                                                       float *flattened_dataset_inputs,
-                                                       int samples_count,
-                                                       float *flattened_dataset_expected_outputs,
-                                                       float alpha = 0.001,
-                                                       int iterations_count = 1000);
-
-float predict_linear_model_regression(float *model, int model_length, float *sample_inputs);
-
-float predict_linear_model_classification(float *model, int model_length, float *sample_inputs);
-
-float *create_linear_model(int input_dim) {
+DLLEXPORT float *create_linear_model(int input_dim) {
     auto *result = (float *) malloc(sizeof(float) * input_dim);
     for (int i = 0; i < input_dim + 1; i++) {
         result[i] = ((rand() % 2001) / 1000.0) - 1.;
@@ -37,11 +12,11 @@ float *create_linear_model(int input_dim) {
     return result;
 }
 
-void destroy_linear_model(float *model) {
+DLLEXPORT void destroy_linear_model(float *model) {
     free(model);
 }
 
-void train_classification_rosenblatt_rule_linear_model(float *model,
+DLLEXPORT void train_classification_rosenblatt_rule_linear_model(float *model,
                                                        int input_dim,
                                                        float *flattened_dataset_inputs,
                                                        int samples_count,
@@ -65,7 +40,7 @@ void train_classification_rosenblatt_rule_linear_model(float *model,
     }
 }
 
-void train_regression_pseudo_inverse_linear_model(float *model,
+DLLEXPORT void train_regression_pseudo_inverse_linear_model(float *model,
                                                   int input_dim,
                                                   float *flattened_dataset_inputs,
                                                   int samples_count,
@@ -91,7 +66,7 @@ void train_regression_pseudo_inverse_linear_model(float *model,
 }
 
 
-float predict_linear_model_regression(float *model, int model_length, float *sample_inputs) {
+DLLEXPORT float predict_linear_model_regression(float *model, int model_length, float *sample_inputs) {
     float result = model[0] * 1.0;    // bias
     for (int i = 1; i < model_length + 1; i++) {
         result += model[i] * sample_inputs[i - 1];
@@ -99,7 +74,7 @@ float predict_linear_model_regression(float *model, int model_length, float *sam
     return result;
 }
 
-float predict_linear_model_classification(float *model, int model_length, float *sample_inputs) {
+DLLEXPORT float predict_linear_model_classification(float *model, int model_length, float *sample_inputs) {
     if (predict_linear_model_regression(model, model_length, sample_inputs) >= 0) {
         return 1.0;
     } else {

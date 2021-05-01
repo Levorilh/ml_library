@@ -1,18 +1,22 @@
-//
-// Created by N on 01/05/2021.
-//
+#include "headers/MLP_model.h"
 
-#include <cstdio>
-#include <cstdlib>
-#include "Eigen/Dense"
 
 using Eigen::MatrixXd;
 using namespace std;
 
-float *create_mlp_model(int);
-float *forward_pass(float sample_inputs, bool is_classification);
+float *create_mlp_model(int){
+    return nullptr;
+}
+
+
+float *forward_pass(float sample_inputs, bool is_classification){
+    return nullptr;
+}
 float *train_stochastic_gradient_descent(float flattened_dataset_inputs,
-                                        float flattened_dataset_expected_outputs,
-                                        bool is_classification,
-                                        float alpha = 0.001,
-                                        int iterations_count = 10000);
+                                         float flattened_dataset_expected_outputs,
+                                         bool is_classification,
+                                         float alpha,
+                                         int iterations_count){
+    return nullptr;
+}
+

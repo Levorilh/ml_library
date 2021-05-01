@@ -1,11 +1,9 @@
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include "Eigen/Dense"
-#include "Linear_model.cpp"
-#include "MLP_model.cpp"
+#include "headers/main.h"
 
 int main(int argc, char** argv) {
+
+    printf("yo");
+
     srand(time(nullptr));
 
     // TEST REGRESSION
