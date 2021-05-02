@@ -5,7 +5,7 @@ DLLEXPORT float predict_linear_model_regression(float *model, int model_length, 
 DLLEXPORT float predict_linear_model_classification(float *model, int model_length, float *sample_inputs);
 
 DLLEXPORT float *create_linear_model(int input_dim) {
-    auto *result = (float *) malloc(sizeof(float) * input_dim);
+    auto *result = (float *) malloc(sizeof(float) * input_dim + 1);
     for (int i = 0; i < input_dim + 1; i++) {
         result[i] = ((rand() % 2001) / 1000.0) - 1.;
     }
@@ -23,7 +23,7 @@ DLLEXPORT void train_classification_rosenblatt_rule_linear_model(float *model,
                                                        float *flattened_dataset_expected_outputs,
                                                        float alpha,
                                                        int iterations_count) {
-    for (int it = 0; it < iterations_count; it++) {
+    for (int it = 1; it <= iterations_count; it++) {
         int k = rand() % samples_count;
         float Yk = flattened_dataset_expected_outputs[k];
         float *Xk = new float[input_dim];
@@ -36,7 +36,7 @@ DLLEXPORT void train_classification_rosenblatt_rule_linear_model(float *model,
         for (int i = 1; i < (input_dim + 1) ; i++) {
             model[i] += alpha * (Yk - gXk) * Xk[i - 1];
         }
-
+        printf("Iteration %d  : [%f , %f  , %f ]\n" ,it, model[0] , model[1] , model[2]);
     }
 }
 
