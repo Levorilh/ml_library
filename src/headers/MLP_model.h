@@ -16,12 +16,12 @@
 
     DLLEXPORT void destroy_mlp_prediction(float * prediction);
     DLLEXPORT void destroy_mlp_model(MLP * mlp);
-    DLLEXPORT void destroy_mlp_X_model(MLP *mlp);
-    DLLEXPORT void destroy_mlp_deltas_model(MLP *mlp);
-    DLLEXPORT void destroy_mlp_W_model(MLP *mlp);
+    void destroy_mlp_X_model(MLP *mlp);
+    void destroy_mlp_deltas_model(MLP *mlp);
+    void destroy_mlp_W_model(MLP *mlp);
 
-    DLLEXPORT void forward_pass(MLP * mlp, float * sample_inputs, bool is_classification);
-    DLLEXPORT void train_stochastic_gradient_backpropagation(MLP * mlp,
+    void forward_pass(MLP * mlp, float * sample_inputs, bool is_classification);
+    void train_stochastic_gradient_backpropagation(MLP * mlp,
                                                          float * flattened_dataset_inputs,
                                                          int samples_count,
                                                          float * flattened_dataset_expected_outputs,
