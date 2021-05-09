@@ -62,16 +62,16 @@ void destroy_mlp_W_model(MLP *mlp){
 
 MLP * create_mlp_model(int* npl, int npl_length){
     int npl_max = npl[0];
-    for(int i = 1; i<npl_length; i++){  // findMax(array)
+    for(int i = 1; i < npl_length; i++){  // findMax(array)
         if (npl_max < npl[i]){
             npl_max = npl[i];
         }
     }
 
     // que faire des espaces non remplie ?...
-    float *** W = (float ***)(malloc(sizeof(float**) * npl_length));  //[npl_length][npl_max][npl_max];
-    float ** X = (float **)(malloc(sizeof(float*) * npl_length));              //[npl_length][npl_max];
-    float ** deltas = (float **)(malloc(sizeof(float *) * npl_length));         //[npl_length][npl_max];
+    float *** W = (float ***)(malloc(sizeof(float**) * npl_length));     //[npl_length][npl_max][npl_max];
+    float ** X = (float **)(malloc(sizeof(float*) * npl_length));        //[npl_length][npl_max];
+    float ** deltas = (float **)(malloc(sizeof(float *) * npl_length));  //[npl_length][npl_max];
 
 
     int * d = npl;
@@ -140,6 +140,7 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
     int output_dim = mlp->d[mlp->d_length - 1];
     int L = mlp->d_length - 1;
 
+    /*
     cout << endl;
 
     cout << "Weights initialisation: " << endl;
@@ -149,6 +150,7 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
                 cout << "W[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
             }
     cout << endl;
+    */
 
     for(int it = 0; it < iterations_count; it++){
         int k = rand() % samples_count;
@@ -171,7 +173,7 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
 
         for(int l = L; l > 0; l--){
             for(int i = 1; i < mlp->d[l - 1] + 1; i++){
-                float  sum_result = 0.0;
+                float sum_result = 0.0;
                 for(int j = 1; j < mlp->d[l] + 1; j++){
                     sum_result += mlp->W[l][i][j] * mlp->deltas[l][j];
                 }
@@ -183,12 +185,12 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
         for(int l = 1; l < L + 1; l++)
             for(int i = 0; i < mlp->d[l-1] + 1; i++)
                 for(int j = 1; j < mlp->d[l] + 1; j++) {
-                    float temp = alpha * mlp->X[l - 1][i] * mlp->deltas[l][j];
                     mlp->W[l][i][j] -= alpha * mlp->X[l - 1][i] * mlp->deltas[l][j];
-                    //cout << "W[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
+                    // cout << "W[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
                 }
     }
 
+    /*
     cout << "Weights changed: " << endl;
     for(int l = 1; l < L + 1; l++)
         for(int i = 0; i < mlp->d[l-1] + 1; i++)
@@ -196,6 +198,7 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
                 cout << "W[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
             }
     cout << endl;
+    */
 
 }
 

@@ -36,7 +36,7 @@ DLLEXPORT void train_classification_rosenblatt_rule_linear_model(float *model,
         for (int i = 1; i < (input_dim + 1) ; i++) {
             model[i] += alpha * (Yk - gXk) * Xk[i - 1];
         }
-        printf("Iteration %d  : [%f , %f  , %f ]\n" ,it, model[0] , model[1] , model[2]);
+        //printf("Iteration %d  : [%f , %f  , %f ]\n" ,it, model[0] , model[1] , model[2]);
     }
 }
 
