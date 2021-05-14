@@ -11,5 +11,7 @@ int main(int argc, char** argv) {
     //test_regression_mlp();
     //test_classification_mlp();
 
+    test_multiclassification_mlp();
+
     return 0;
 }

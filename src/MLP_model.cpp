@@ -32,7 +32,6 @@ void destroy_mlp_model(MLP * mlp){
     destroy_mlp_X_model(mlp);
     destroy_mlp_deltas_model(mlp);
 
-    free(mlp->d);
     free(mlp);
 }
 
