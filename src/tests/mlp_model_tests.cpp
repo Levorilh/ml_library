@@ -27,16 +27,12 @@ void test_regression_mlp() {
             -5.6 // 1.1826899086590916 (+/- 0.5)
     };
 
-    const int dims[] = {
-        1,
-        3,
-        1
-    };
-//    dims[0] = 1;
-//    dims[1] = 3;
-//    dims[2] = 1;
+    int* dims = (int*)malloc(sizeof(int) * total_input_dim);
+    dims[0] = 1;
+    dims[1] = 3;
+    dims[2] = 1;
 
-    MLP *model = create_mlp_model(dims, total_input_dim);
+    MLP* model = create_mlp_model(dims, total_input_dim);
 
     cout << "#### TEST REGRESSION MLP ####" << endl;
     cout << "-- Before training --" << endl;
@@ -116,14 +112,10 @@ void test_classification_mlp() {
 
     const int total_input_dim = 3;
 
-    const int dims[] = {
-            2,
-            3,
-            1
-    };
-//    dims[0] = 2;
-//    dims[1] = 3;
-//    dims[2] = 1;
+    int * dims = (int *)malloc(sizeof(int) * total_input_dim);
+    dims[0] = 2;
+    dims[1] = 3;
+    dims[2] = 1;
 
     MLP *model = create_mlp_model(dims, total_input_dim);
 
@@ -202,14 +194,10 @@ void test_multiclassification_mlp() {
     };
 
 
-    const int dims[] = {
-            2,
-            3,
-            3
-    };
-//    dims[0] = 2;
-//    dims[1] = 3;
-//    dims[2] = 3;
+    int * dims = (int *)malloc(sizeof(int) * samples_count);
+    dims[0] = 2;
+    dims[1] = 3;
+    dims[2] = 3;
 
     MLP *model = create_mlp_model(dims, samples_count);
 
@@ -237,7 +225,7 @@ void test_multiclassification_mlp() {
     cout << "-- After training --" << endl;
 
     for (int i = 0, j = 0; j < samples_count; i += input_dim, j++) {
-        float sub_input[input_dim];
+        float * sub_input = (float *)malloc(sizeof(float) * input_dim);
         sub_input[0] = dataset_inputs[i];
         sub_input[1] = dataset_inputs[i + 1];
 
@@ -247,6 +235,7 @@ void test_multiclassification_mlp() {
                 << predicted_output[0] << ", " << predicted_output[1] << ", " << predicted_output[2] << "] / Expected output: [" << dataset_expected_outputs[j*3] << ", " << dataset_expected_outputs[j*3 + 1] << ", " << dataset_expected_outputs[j*3 + 2] << "]" << endl;
 
         destroy_mlp_prediction(predicted_output);
+        free(sub_input);
     }
 
 //    cout << "-- Test --" << endl;
