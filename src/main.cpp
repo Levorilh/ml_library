@@ -1,6 +1,6 @@
 #include "headers/main.h"
-#include "tests/linear_model_tests.cpp"
-#include "tests/mlp_model_tests.cpp"
+
+#include "headers/tests/mlp_model_tests.h"
 
 int main(int argc, char** argv) {
     srand(time(nullptr));
@@ -9,9 +9,9 @@ int main(int argc, char** argv) {
     //test_classification_linear();
 
     //test_regression_mlp();
-    //test_classification_mlp();
+    test_classification_mlp();
 
-    test_multiclassification_mlp();
+//    test_multiclassification_mlp();
 
     return 0;
 }
