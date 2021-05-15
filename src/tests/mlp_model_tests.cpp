@@ -6,31 +6,35 @@
 
 
 void test_regression_mlp() {
-    int input_dim = 1;
-    int total_input_dim = 3;
+    const int input_dim = 1;
+    const int total_input_dim = 3;
 
-    float flattened_dataset_inputs[] = {
+    const float flattened_dataset_inputs[] = {
             -5,
             4,
             6,
     };
 
-    float dataset_expected_outputs[] = {
+    const float dataset_expected_outputs[] = {
             1.2,
             7,
             8.3
     };
 
-    float input_test[] = {
+    const float input_test[] = {
             0.1, // 2.9563198900137584 (+/- 0.65)
             10.2, // 8.828858498298032 (+/- 0.5)
             -5.6 // 1.1826899086590916 (+/- 0.5)
     };
 
-    int dims[total_input_dim];
-    dims[0] = 1;
-    dims[1] = 3;
-    dims[2] = 1;
+    const int dims[] = {
+        1,
+        3,
+        1
+    };
+//    dims[0] = 1;
+//    dims[1] = 3;
+//    dims[2] = 1;
 
     MLP *model = create_mlp_model(dims, total_input_dim);
 
@@ -83,23 +87,23 @@ void test_regression_mlp() {
 }
 
 void test_classification_mlp() {
-    int samples_count = 4;
-    int input_dim = 2;
-    float dataset_inputs[] = {
+    const int samples_count = 4;
+    const int input_dim = 2;
+    const float dataset_inputs[] = {
             0, 0,
             1, 1,
             0, 1,
             1, 0
     };
 
-    float dataset_expected_outputs[] = {
+    const float dataset_expected_outputs[] = {
             -1,
             -1,
             1,
             1
     };
 
-    float input_test[] = {
+    const float input_test[] = {
             /*
              * Ne pas oublier qu'on entraîne notre algorithme sur un exemple XOR, donc le pire exemple possible.
              * Du coup, faut que je continue a reflechir a des possibles exemples.
@@ -110,12 +114,16 @@ void test_classification_mlp() {
             1, 0
     };
 
-    int total_input_dim = 3;
+    const int total_input_dim = 3;
 
-    int dims[total_input_dim];
-    dims[0] = 2;
-    dims[1] = 3;
-    dims[2] = 1;
+    const int dims[] = {
+            2,
+            3,
+            1
+    };
+//    dims[0] = 2;
+//    dims[1] = 3;
+//    dims[2] = 1;
 
     MLP *model = create_mlp_model(dims, total_input_dim);
 
@@ -177,27 +185,31 @@ void test_classification_mlp() {
 }
 
 void test_multiclassification_mlp() {
-    int samples_count = 3;
+    const int samples_count = 3;
 
-    int input_dim = 2;
+    const int input_dim = 2;
 
-    float dataset_inputs[] = {
+    const float dataset_inputs[] = {
             0., 0.,
             0.5, 0.5,
             1., 0.
     };
 
-    float dataset_expected_outputs[] = {
+    const float dataset_expected_outputs[] = {
             1, -1, -1,
             -1, 1, -1,
             -1, -1, 1
     };
 
 
-    int dims[samples_count];
-    dims[0] = 2;
-    dims[1] = 3;
-    dims[2] = 3;
+    const int dims[] = {
+            2,
+            3,
+            3
+    };
+//    dims[0] = 2;
+//    dims[1] = 3;
+//    dims[2] = 3;
 
     MLP *model = create_mlp_model(dims, samples_count);
 

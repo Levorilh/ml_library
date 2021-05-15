@@ -41,10 +41,10 @@ DLLEXPORT void train_classification_rosenblatt_rule_linear_model(float *model,
 }
 
 DLLEXPORT void train_regression_pseudo_inverse_linear_model(float *model,
-                                                  int input_dim,
-                                                  float *flattened_dataset_inputs,
-                                                  int samples_count,
-                                                  float *flattened_dataset_expected_outputs) {
+                                                  const int input_dim,
+                                                  const float flattened_dataset_inputs[],
+                                                  const int samples_count,
+                                                  const float flattened_dataset_expected_outputs[]) {
     MatrixXd X(samples_count, input_dim + 1);
     for (int i = 0; i < samples_count; i++) {
         X(i, 0) = 1;

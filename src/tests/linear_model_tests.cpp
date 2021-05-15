@@ -78,22 +78,22 @@ void test_classification_linear(){
 
 
 void test_regression_linear(){
-    int input_dim = 1;
-    int total_input_dim = 3;
+    const int input_dim = 1;
+    const int total_input_dim = 3;
 
-    float flattened_dataset_inputs[] = {
+    const float flattened_dataset_inputs[] = {
             -5,
             4,
             6,
     };
 
-    float dataset_expected_outputs[] = {
+    const float dataset_expected_outputs[] = {
             5.2,
             7,
             8.3
     };
 
-    float input_test[] = {
+    const float input_test[] = {
             0.1, // 6.431019417475729
             10.2, // 9.204417475728157
             -5.6 // 4.967281553398059
