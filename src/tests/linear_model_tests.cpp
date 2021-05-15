@@ -105,7 +105,7 @@ void test_regression_linear(){
     cout << "#### TEST REGRESSION LINEAR ####" << endl;
     cout << "-- Before training --" << endl;
 
-    float predicted_outputs[total_input_dim];
+    float * predicted_outputs = (float *)malloc(sizeof(float) * total_input_dim);
 
     for(int i = 0; i < total_input_dim; i++){
         float input_sub[1];
