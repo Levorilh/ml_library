@@ -5,7 +5,7 @@ DLLEXPORT float predict_linear_model_regression(float *model, int model_length, 
 DLLEXPORT float predict_linear_model_classification(float *model, int model_length, float *sample_inputs);
 
 DLLEXPORT float *create_linear_model(int input_dim) {
-    auto *result = (float *) malloc(sizeof(float) * input_dim + 1);
+    float *result = (float *)(malloc(sizeof(float) * (input_dim + 1)));
     for (int i = 0; i < input_dim + 1; i++) {
         result[i] = ((rand() % 2001) / 1000.0) - 1.;
     }

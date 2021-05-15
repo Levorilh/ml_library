@@ -20,14 +20,6 @@ void destroy_mlp_prediction(float * prediction){
 }
 
 void destroy_mlp_model(MLP * mlp){
-
-    int npl_max = mlp->d[0];
-    for(int i = 1; i<mlp->d_length; i++){  // findMax(array)
-        if (npl_max < mlp->d[i]){
-            npl_max = mlp->d[i];
-        }
-    }
-
     destroy_mlp_W_model(mlp);
     destroy_mlp_X_model(mlp);
     destroy_mlp_deltas_model(mlp);
@@ -76,10 +68,13 @@ MLP * create_mlp_model(int* npl, int npl_length){
     int * d = npl;
 
     for(int l = 0; l < npl_length; l++){
-        W[l] = (float **)malloc(sizeof(float*)*npl_max);
-        if (l == 0) continue;
+        if (l == 0){
+            W[l] = (float **)malloc(sizeof(float*)*npl_max);
+            continue;
+        } else
+            W[l] = (float **)malloc(sizeof(float*)*(npl[l - 1] + 1));
         for(int i = 0; i < npl[l - 1] + 1; i++) {
-            W[l][i] = (float *)malloc(sizeof(float)*npl[l]);
+            W[l][i] = (float *)malloc(sizeof(float)*(npl[l] + 1));
             for (int j = 0; j < npl[l] + 1; j++) {
                 float x = ((rand() % 2001) / 1000.0) - 1.;
                 W[l][i][j] = x;
@@ -89,13 +84,13 @@ MLP * create_mlp_model(int* npl, int npl_length){
     }
 
     for(int l = 0; l < npl_length; l++) {
-        X[l] = (float *)malloc(sizeof(float) * npl[l]);
+        X[l] = (float *)malloc(sizeof(float) * (npl[l] + 1));
         for (int j = 0; j < npl[l] + 1; j++)
             X[l][j] = j == 0 ? 1. : 0.;
     }
 
     for(int l = 0; l < npl_length; l++) {
-        deltas[l] = (float *)malloc(sizeof(float) * npl[l]);
+        deltas[l] = (float *)malloc(sizeof(float) * (npl[l] + 1));
         for (int j = 0; j < npl[l] + 1; j++)
             deltas[l][j] = 0.;
     }
@@ -112,7 +107,7 @@ MLP * create_mlp_model(int* npl, int npl_length){
 
 
 void forward_pass(MLP * mlp, float * sample_inputs, bool is_classification){
-    int L = mlp->d_length - 1;
+    const int L = mlp->d_length - 1;
 
     for(int j = 1; j < mlp->d[0] + 1; j++)
         mlp->X[0][j] = sample_inputs[j - 1];
@@ -123,7 +118,7 @@ void forward_pass(MLP * mlp, float * sample_inputs, bool is_classification){
             for(int i = 0; i < mlp->d[l - 1] + 1; i++)
                 sum_result += mlp->W[l][i][j] * mlp->X[l - 1][i];
             mlp->X[l][j] = sum_result;
-            if (is_classification or l < L)
+            if (is_classification || l < L)
                 mlp->X[l][j] = tanh(mlp->X[l][j]);
         }
 }
@@ -136,8 +131,8 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
                                                   float alpha,
                                                   int iterations_count){
     int input_dim = mlp->d[0];
-    int output_dim = mlp->d[mlp->d_length - 1];
-    int L = mlp->d_length - 1;
+    const int output_dim = mlp->d[mlp->d_length - 1];
+    const int L = mlp->d_length - 1;
 
     /*
     cout << endl;
@@ -150,15 +145,15 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
             }
     cout << endl;
     */
-
     for(int it = 0; it < iterations_count; it++){
         int k = rand() % samples_count;
 
-        float sample_input[input_dim];
-        for (int index = 0; index < input_dim; index ++)
+        float * sample_input = (float *)malloc(sizeof(float) * input_dim);
+        for (int index = 0; index < input_dim; index ++) {
             sample_input[index] = flattened_dataset_inputs[k * input_dim + index];
+        }
 
-        float sample_expected_output[output_dim];
+        float * sample_expected_output = (float *)malloc(sizeof(float) * output_dim);
         for (int index = 0; index < output_dim; index ++)
             sample_expected_output[index] = flattened_dataset_expected_outputs[k * output_dim + index];
 
@@ -187,7 +182,11 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
                     mlp->W[l][i][j] -= alpha * mlp->X[l - 1][i] * mlp->deltas[l][j];
                     // cout << "W[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
                 }
+
+        free(sample_input);
+        free(sample_expected_output);
     }
+
 
     /*
     cout << "Weights changed: " << endl;
