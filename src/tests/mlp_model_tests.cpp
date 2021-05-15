@@ -27,7 +27,7 @@ void test_regression_mlp() {
             -5.6 // 1.1826899086590916 (+/- 0.5)
     };
 
-    int dims[total_input_dim];
+    int * dims = (int *)malloc(sizeof(int) * total_input_dim);
     dims[0] = 1;
     dims[1] = 3;
     dims[2] = 1;
@@ -112,7 +112,7 @@ void test_classification_mlp() {
 
     int total_input_dim = 3;
 
-    int dims[total_input_dim];
+    int * dims = (int *)malloc(sizeof(int) * total_input_dim);
     dims[0] = 2;
     dims[1] = 3;
     dims[2] = 1;
@@ -194,7 +194,7 @@ void test_multiclassification_mlp() {
     };
 
 
-    int dims[samples_count];
+    int * dims = (int *)malloc(sizeof(int) * samples_count);
     dims[0] = 2;
     dims[1] = 3;
     dims[2] = 3;
@@ -225,7 +225,7 @@ void test_multiclassification_mlp() {
     cout << "-- After training --" << endl;
 
     for (int i = 0, j = 0; j < samples_count; i += input_dim, j++) {
-        float sub_input[input_dim];
+        float * sub_input = (float *)malloc(sizeof(float) * input_dim);
         sub_input[0] = dataset_inputs[i];
         sub_input[1] = dataset_inputs[i + 1];
 
