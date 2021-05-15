@@ -204,19 +204,19 @@ void test_multiclassification_mlp() {
     cout << "#### TEST MULTICLASSIFICATION MLP ####" << endl;
     cout << "-- Before training --" << endl;
 
+    float *predicted_output;
     for (int i = 0, j = 0; j < samples_count; i += input_dim, j++) {
         float sub_input[2];
         sub_input[0] = dataset_inputs[i];
         sub_input[1] = dataset_inputs[i + 1];
 
-        float *predicted_output = predict_mlp_model_classification(model, sub_input);
-
+        predicted_output = predict_mlp_model_classification(model, sub_input);
         cout << "Input-checker: [" << sub_input[0] << "," << sub_input[1] << "] / " << "Prediction: ["
              << predicted_output[0] << ", " << predicted_output[1] << ", " << predicted_output[2] << "] / Expected output: [" << dataset_expected_outputs[j*3] << ", " << dataset_expected_outputs[j*3 + 1] << ", " << dataset_expected_outputs[j*3 + 2] << "]" << endl;
 
-        destroy_mlp_prediction(predicted_output);
     }
 
+//    destroy_mlp_prediction(predicted_output);
     train_classification_stochastic_gradient_backpropagation_mlp_model(model,
                                                                        dataset_inputs,
                                                                        samples_count,
@@ -229,14 +229,14 @@ void test_multiclassification_mlp() {
         sub_input[0] = dataset_inputs[i];
         sub_input[1] = dataset_inputs[i + 1];
 
-        float *predicted_output = predict_mlp_model_classification(model, sub_input);
+        predicted_output = predict_mlp_model_classification(model, sub_input);
 
         cout << "Input-checker: [" << sub_input[0] << "," << sub_input[1] << "] / " << "Prediction: ["
                 << predicted_output[0] << ", " << predicted_output[1] << ", " << predicted_output[2] << "] / Expected output: [" << dataset_expected_outputs[j*3] << ", " << dataset_expected_outputs[j*3 + 1] << ", " << dataset_expected_outputs[j*3 + 2] << "]" << endl;
 
-        destroy_mlp_prediction(predicted_output);
         free(sub_input);
     }
+//    destroy_mlp_prediction(predicted_output);
 
 //    cout << "-- Test --" << endl;
 //
@@ -258,12 +258,12 @@ void test_multiclassification_mlp() {
     float dataset_test[2];
     dataset_test[0] = 100;
     dataset_test[1] = 0;
-    float *predicted_output = predict_mlp_model_classification(model, dataset_test);
+    predicted_output = predict_mlp_model_classification(model, dataset_test);
 
     cout << "Input-checker: [" << dataset_test[0] << "," << dataset_test[1] << "] / " << "Prediction: ["
          << predicted_output[0] << ", " << predicted_output[1] << ", " << predicted_output[2] << "]" << endl;
 
-    destroy_mlp_prediction(predicted_output);
+//    destroy_mlp_prediction(predicted_output);
 
     destroy_mlp_model(model);
 }
