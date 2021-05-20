@@ -1,4 +1,4 @@
-#include "headers/MLP_model.h"
+#include "headers/mlp/MLP_model.h"
 #include <math.h>
 
 using Eigen::MatrixXd;
