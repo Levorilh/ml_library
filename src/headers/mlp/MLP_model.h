@@ -4,22 +4,16 @@
 
     #include <cstdio>
     #include <cstdlib>
-    #include "../../Eigen/Dense"
+    #include "../../../Eigen/Dense"
 
-    #include "main.h"
+    #include "../main.h"
+    #include "create.h"
 
     using Eigen::MatrixXd;
     using namespace std;
 
-    typedef struct MLP_t{
-        int d_length;
-        int *d;
-        float** X;
-        float** deltas;
-        float*** W;
-    } MLP;
 
-    DLLEXPORT MLP* create_mlp_model(int* npl, const int npl_length);
+
 
     DLLEXPORT void destroy_mlp_prediction(float * prediction);
     DLLEXPORT void destroy_mlp_model(MLP * mlp);

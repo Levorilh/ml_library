@@ -7,12 +7,8 @@
 #endif
 
 
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include "../../Eigen/Dense"
-#include "Linear_model.h"
-#include "MLP_model.h"
+#include "linear/create.h"
+//#include "mlp/MLP_model.h"
 
 
 

@@ -1,9 +1,4 @@
-//
-// Created by Reda on 08/05/2021.
-//
-
-#include "../headers/main.h"
-
+#include "../headers/tests/linear_model_test.h"
 void test_classification_linear(){
     int input_dim = 2;
 
@@ -105,7 +100,7 @@ void test_regression_linear(){
     cout << "#### TEST REGRESSION LINEAR ####" << endl;
     cout << "-- Before training --" << endl;
 
-    float * predicted_outputs = (float *)malloc(sizeof(float) * total_input_dim);
+    auto * predicted_outputs = (float *)malloc(sizeof(float) * total_input_dim);
 
     for(int i = 0; i < total_input_dim; i++){
         float input_sub[1];
