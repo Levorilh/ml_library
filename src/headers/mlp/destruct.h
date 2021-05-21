@@ -1,7 +1,6 @@
 #ifndef ML_LIBRARY_MLP_DESTRUCT_H
 #define ML_LIBRARY_MLP_DESTRUCT_H
 
-class MLP;
 #include "create.h"
 #include <cstdlib>
 #include <cstdio>

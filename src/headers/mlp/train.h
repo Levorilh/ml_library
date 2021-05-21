@@ -1,6 +1,9 @@
 #ifndef ML_LIBRARY_MLP_TRAIN_H
 #define ML_LIBRARY_MLP_TRAIN_H
 
+#include "MLP.h"
+#include "create.h"
+
 void train_stochastic_gradient_backpropagation(MLP * mlp,
                                                const float flattened_dataset_inputs[],
                                                const int samples_count,
