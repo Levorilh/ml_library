@@ -1,8 +1,9 @@
-//
-// Created by ttres on 21/05/2021.
-//
-
 #ifndef ML_LIBRARY_LINEAR_H
 #define ML_LIBRARY_LINEAR_H
+
+#include "create.h"
+#include "train.h"
+#include "predict.h"
+#include "destruct.h"
 
 #endif //ML_LIBRARY_LINEAR_H

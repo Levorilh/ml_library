@@ -2,15 +2,20 @@
 #define LIBRARY_MLP_MODEL_H
 
 
-    #include <cstdio>
+
+#include <cstdio>
     #include <cstdlib>
+#include <cmath>
+
     #include "../../../Eigen/Dense"
 
     #include "../main.h"
     #include "create.h"
 
-    #include "destruct.h"
-    #include "predict.h"
+#include "MLP.h"
+#include "destruct.h"
+#include "predict.h"
+
     #include "train.h"
 
     using Eigen::MatrixXd;

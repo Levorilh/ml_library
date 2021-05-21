@@ -1,4 +1,4 @@
-#include "headers/mlp/destruct.h"
+#include "../headers/mlp/destruct.h"
 
 
 void destroy_mlp_prediction(float * prediction){

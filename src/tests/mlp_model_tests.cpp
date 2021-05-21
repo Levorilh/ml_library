@@ -1,9 +1,4 @@
-//
-// Created by Reda on 09/05/2021.
-//
-
-#include "../headers/main.h"
-
+#include "../headers/tests/mlp_model_test.h"
 
 void test_regression_mlp() {
     const int input_dim = 1;

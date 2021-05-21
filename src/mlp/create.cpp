@@ -13,9 +13,9 @@ MLP * create_mlp_model(int* npl,const int npl_length){
         d[i] = npl[i];
     }
 
-    float *** W = (float ***)(malloc(sizeof(float**) * npl_length));
-    float ** X = (float **)(malloc(sizeof(float*) * npl_length));
-    float ** deltas = (float **)(malloc(sizeof(float *) * npl_length));
+    auto *** W = (float ***)(malloc(sizeof(float**) * npl_length));
+    auto ** X = (float **)(malloc(sizeof(float*) * npl_length));
+    auto ** deltas = (float **)(malloc(sizeof(float *) * npl_length));
 
 
     for(int l = 0; l < npl_length; l++){
@@ -28,7 +28,7 @@ MLP * create_mlp_model(int* npl,const int npl_length){
             W[l][i] = (float *)malloc(sizeof(float)*(npl[l] + 1));
             for (int j = 0; j < npl[l] + 1; j++) {
                 float x = ( ((float)(rand() % 2001)) / 1000.0) - 1.;
-                cout << "Weights initialisation: " << x << endl;
+                std::cout << "Weights initialisation: " << x << std::endl;
                 W[l][i][j] = x;
             }
         }

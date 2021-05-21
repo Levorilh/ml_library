@@ -1,5 +1,5 @@
-#ifndef ML_LIBRARY_TRAIN_H
-#define ML_LIBRARY_TRAIN_H
+#ifndef ML_LIBRARY_MLP_TRAIN_H
+#define ML_LIBRARY_MLP_TRAIN_H
 
 void train_stochastic_gradient_backpropagation(MLP * mlp,
                                                const float flattened_dataset_inputs[],

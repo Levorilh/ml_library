@@ -1,5 +1,5 @@
-#ifndef ML_LIBRARY_TRAIN_H
-#define ML_LIBRARY_TRAIN_H
+#ifndef ML_LIBRARY_LINEAR_TRAIN_H
+#define ML_LIBRARY_LINEAR_TRAIN_H
 
 #include "../main.h"
 #include "create.h"

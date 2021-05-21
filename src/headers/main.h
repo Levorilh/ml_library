@@ -6,9 +6,14 @@
 #define DLLEXPORT extern "C"
 #endif
 
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include "../../Eigen/Dense"
 
-#include "linear/create.h"
-//#include "mlp/MLP_model.h"
+#include "linear/linear.h"
+#include "mlp/MLP.h"
 
 
 
