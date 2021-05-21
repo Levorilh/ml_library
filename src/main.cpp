@@ -6,9 +6,9 @@ int main() {
     srand(time(nullptr));
 
 //    test_regression_linear();
-    test_classification_linear();
+//    test_classification_linear();
 
-    //test_regression_mlp();
+    test_regression_mlp();
 //    test_classification_mlp();
 
 //    test_multiclassification_mlp();
