@@ -28,7 +28,7 @@ MLP * create_mlp_model(int* npl,const int npl_length){
             W[l][i] = (float *)malloc(sizeof(float)*(npl[l] + 1));
             for (int j = 0; j < npl[l] + 1; j++) {
                 float x = ( ((float)(rand() % 2001)) / 1000.0) - 1.;
-                std::cout << "Weights initialisation: " << x << std::endl;
+                //std::cout << "Weights initialisation: " << x << std::endl;
                 W[l][i][j] = x;
             }
         }
