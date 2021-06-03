@@ -1,4 +1,4 @@
-#include "../headers/mlp/train.h"
+#include "../headers/mlp/MLP.h"
 
 void train_stochastic_gradient_backpropagation(MLP * mlp,
                                                const float flattened_dataset_inputs[],

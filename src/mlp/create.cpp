@@ -1,4 +1,4 @@
-#include "../headers/mlp/create.h"
+#include "../headers/mlp/MLP.h"
 
 MLP * create_mlp_model(int* npl,const int npl_length){
     int npl_max = npl[0];

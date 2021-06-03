@@ -1,4 +1,4 @@
-#include "../headers/mlp/predict.h"
+#include "../headers/mlp/MLP.h"
 
 float* predict_mlp_model_regression(MLP * mlp, float * sample_input){
     forward_pass(mlp,sample_input,false);
