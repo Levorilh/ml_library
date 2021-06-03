@@ -16,6 +16,6 @@ public:
 typedef class MLP_t MLP;
 
 
-MLP* create_mlp_model(int* npl,const int npl_length);
+DLLEXPORT MLP* create_mlp_model(int* npl,const int npl_length);
 
 #endif //ML_LIBRARY_CREATE_H
