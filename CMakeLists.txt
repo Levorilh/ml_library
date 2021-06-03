@@ -8,7 +8,7 @@ set(MAIN src/main.cpp src/headers/main.h)
 set(UTILS src/utils.cpp src/headers/utils.h)
 
 set(mlp_SOURCE_FILES src/mlp/MLP.cpp src/mlp/predict.cpp       src/mlp/train.cpp         src/mlp/destruct.cpp       src/mlp/create.cpp)
-set(mlp_HEADER_FILES src/headers/mlp/MLP_model.h src/headers/mlp/predict.h src/headers/mlp/train.h   src/headers/mlp/destruct.h src/headers/mlp/create.h)
+set(mlp_HEADER_FILES src/headers/mlp/predict.h src/headers/mlp/train.h   src/headers/mlp/destruct.h src/headers/mlp/create.h)
 
 set(MLP ${mlp_SOURCE_FILES} ${mlp_HEADER_FILES})
 
