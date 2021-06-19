@@ -41,10 +41,21 @@ DLLEXPORT MLP* load_mlp_model(char * path){
     }*/
 
     //deltas
-    /*pas implementer apparement inutile*/
+    /*float** deltas = (float**)malloc(sizeof(float*) * d_length);
+    for(int i = 0; i<d_length; i++){
+        fgets(model_to_string, maxLength,fp);
+        char ** s = split(model_to_string, len);
+        float* deltas2 = (float*)malloc(sizeof(float) * (*len));
+        X[i] = deltas2;
+        for(int j = 0; j < (*len); j++){
+            X[i][j] = atof(s[j]);
+            free(s[j]);
+        }
+        free(s);
+    }*/
 
     //W
-    /*float*** W = (float***)malloc(sizeof(float**) * d_length);
+    float*** W = (float***)malloc(sizeof(float**) * d_length);
     fgets(model_to_string, maxLength,fp);
     char ** flatenned_W = split(model_to_string, len);
     int cpt = 0;
@@ -62,14 +73,14 @@ DLLEXPORT MLP* load_mlp_model(char * path){
                 cpt++;
             }
         }
-    }*/
+    }
 
     MLP * result = (MLP *)(malloc(sizeof(MLP)));
     result->d_length = d_length;
     result->d = d;
     //result->deltas = deltas;
     //result->X = X;
-    //result->W = W;
+    result->W = W;
 
     free(len);
     //free(model_to_string);
