@@ -17,6 +17,7 @@ int main() {
 //    test_load_linear();
 //    test_save_mlp_model();
 
+    load_mlp_model("C:\\Users\\N\\Desktop\\test_mlp_model.txt");
     return 0;
 }
 
