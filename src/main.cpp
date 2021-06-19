@@ -12,9 +12,12 @@ int main() {
 //
 //    test_multiclassification_mlp();
 
-//   test_regression_linear_tricky();
+//    test_regression_linear_tricky();
 
-    test_load_linear();
+//    test_load_linear();
+//    test_save_mlp_model();
 
     return 0;
 }
+
+

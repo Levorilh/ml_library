@@ -1,4 +1,5 @@
 #include "../headers/tests/mlp_model_test.h"
+#include "../headers/mlp/save.h"
 
 void test_regression_mlp() {
     const int input_dim = 1;
@@ -259,6 +260,20 @@ void test_multiclassification_mlp() {
          << predicted_output[0] << ", " << predicted_output[1] << ", " << predicted_output[2] << "]" << endl;
 
 //    destroy_mlp_prediction(predicted_output);
+
+    destroy_mlp_model(model);
+}
+
+void test_save_mlp_model(){
+    int total_input_dim = 3;
+    int* dims = (int*)malloc(sizeof(int) * total_input_dim);
+    dims[0] = 1;
+    dims[1] = 3;
+    dims[2] = 1;
+
+    MLP* model = create_mlp_model(dims, total_input_dim);
+
+    save_mlp_model(model, "C:\\Users\\N\\Desktop\\test_mlp_model.txt");
 
     destroy_mlp_model(model);
 }
