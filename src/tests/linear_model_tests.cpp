@@ -66,6 +66,8 @@ void test_classification_linear(){
 
     cout << "####################################" << endl;
 
+    save_linear_model(model, input_dim, "save.txt");
+
     destroy_linear_model(model);
 }
 
@@ -77,7 +79,7 @@ void test_regression_linear(){
     const int total_input_dim = 3;
 
     const float flattened_dataset_inputs[] = {
-            -5,
+            -1,
             4,
             6,
     };
@@ -104,7 +106,7 @@ void test_regression_linear(){
 
     for(int i = 0; i < total_input_dim; i++){
         float input_sub[1];
-        input_sub[0] = dataset_expected_outputs[i];
+        input_sub[0] = flattened_dataset_inputs[i];
         predicted_outputs[i] = predict_linear_model_regression(model,input_dim,input_sub);
         cout << "Prediction: " << predicted_outputs[i] << " / Expected output: " << dataset_expected_outputs[i] << endl;
     }
@@ -121,7 +123,7 @@ void test_regression_linear(){
 
     for(int i = 0; i < total_input_dim; i++){
         float input_sub[1];
-        input_sub[0] = dataset_expected_outputs[i];
+        input_sub[0] = flattened_dataset_inputs[i];
 
         predicted_outputs[i] = predict_linear_model_regression(model,input_dim,input_sub);
         cout << "Prediction: " << predicted_outputs[i] << " / Expected output: " << dataset_expected_outputs[i] << endl;
@@ -140,4 +142,79 @@ void test_regression_linear(){
     cout << "####################################" << endl;
 
     destroy_linear_model(model);
+}
+
+
+void test_regression_linear_tricky(){
+    const int input_dim = 2;
+    const int total_input_dim = 8;
+
+    const float flattened_dataset_inputs[] = {
+            1, 1,
+            2, 2,
+            3, 3,
+            3, 3,
+    };
+
+    const float dataset_expected_outputs[] = {
+            1,
+            2,
+            3,
+            3,
+    };
+
+    float * model = create_linear_model(input_dim);
+
+    cout << "#### TEST REGRESSION LINEAR ####" << endl;
+    cout << "-- Before training --" << endl;
+
+    auto * predicted_outputs = (float *)malloc(sizeof(float) * total_input_dim);
+
+    for(int i = 0; i < total_input_dim; i += 2){
+        float input_sub[2];
+        input_sub[0] = flattened_dataset_inputs[i];
+        input_sub[1] = flattened_dataset_inputs[i + 1];
+        //input_sub[2] = flattened_dataset_inputs[i + 2];
+        //input_sub[3] = flattened_dataset_inputs[i + 3];
+        predicted_outputs[i] = predict_linear_model_regression(model,input_dim,input_sub);
+        cout << "Prediction: " << predicted_outputs[i] << " / Expected output: " << dataset_expected_outputs[i/input_dim] << endl;
+    }
+
+
+    train_regression_pseudo_inverse_linear_model(model,
+                                                 input_dim,
+                                                 flattened_dataset_inputs,
+                                                 (total_input_dim / input_dim),
+                                                 dataset_expected_outputs);
+
+
+    cout << "-- After training --" << endl;
+
+    for(int i = 0; i < total_input_dim; i += 2){
+        float input_sub[2];
+        input_sub[0] = flattened_dataset_inputs[i];
+        input_sub[1] = flattened_dataset_inputs[i + 1];
+        //input_sub[2] = flattened_dataset_inputs[i + 2];
+        //input_sub[3] = flattened_dataset_inputs[i + 3];
+
+        predicted_outputs[i] = predict_linear_model_regression(model,input_dim,input_sub);
+        cout << "Prediction: " << predicted_outputs[i] << " / Expected output: " << dataset_expected_outputs[i/input_dim] << endl;
+    }
+
+    cout << "-- Test --" << endl;
+
+
+    cout << "####################################" << endl;
+
+    destroy_linear_model(model);
+}
+
+void test_load_linear(){
+    int * input_dim = (int*)malloc(sizeof(int));
+    float * model = load_linear_model("C:\\Users\\N\\Desktop\\test_linear_model.txt", input_dim);
+    for(int i =0; i< (*input_dim) +1;i++){
+        cout<<model[i]<<endl;
+    }
+    free(input_dim);
+    free(model);
 }

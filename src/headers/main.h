@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "../../Eigen/Dense"
+#include "utils.h"
 
 #include "linear/linear.h"
 #include "mlp/MLP.h"

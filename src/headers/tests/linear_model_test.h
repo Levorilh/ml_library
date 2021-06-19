@@ -5,4 +5,6 @@
 
 void test_classification_linear();
 void test_regression_linear();
+void test_load_linear();
+
 #endif //ML_LIBRARY_LINEAR_MODEL_TEST_H

@@ -10,7 +10,11 @@ int main() {
 //    test_regression_mlp();
 //    test_classification_mlp();
 //
-    test_multiclassification_mlp();
+//    test_multiclassification_mlp();
+
+//   test_regression_linear_tricky();
+
+    test_load_linear();
 
     return 0;
 }

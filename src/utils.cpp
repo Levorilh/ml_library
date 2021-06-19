@@ -1,4 +1,4 @@
-#include "headers/main.h"
+#include "headers/utils.h"
 
 DLLEXPORT void init_random(){
     srand(time(nullptr));
@@ -10,8 +10,8 @@ DLLEXPORT void init_random(){
 //  for(int i =0; i<*len;i++){
 //      printf(" %s\n",rslt[i]);
 //  }
-char ** split(char* str, int* array_len, char delimiter = ';'){
-    int i,j,ctr,maxLenSubstring=0,actuelLenSubstring=0,cpt=1;
+char ** split(char* str, int* array_len, char delimiter){
+    int i, j, ctr, maxLenSubstring=0, actuelLenSubstring=0, cpt=1;
 
     // count delimiter number
     for(i=0;i<=(strlen(str));i++){
@@ -51,4 +51,5 @@ char ** split(char* str, int* array_len, char delimiter = ';'){
     }
     return stringArray;
 }
+
 
