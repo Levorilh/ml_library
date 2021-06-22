@@ -3,4 +3,4 @@
     #include "main.h"
     DLLEXPORT void init_random();
     char ** split(char* str, int* array_len, char delimiter = ';');
-#endif ML_LIBRARY_UTILS_H
+#endif //ML_LIBRARY_UTILS_H
