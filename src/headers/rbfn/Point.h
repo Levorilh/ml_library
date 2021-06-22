@@ -5,7 +5,7 @@
 #ifndef ML_LIBRARY_POINT_H
 #define ML_LIBRARY_POINT_H
 
-#include "../headers/main.h"
+#include "../main.h"
 
 class Point {
 private:
@@ -17,5 +17,7 @@ public:
     Point();
     Point(int label, float *coords, int coord_count);
     double distance_to(Point* target);
+    double distance_to(float* data_line);
+    void toString();
 };
 #endif //ML_LIBRARY_POINT_H

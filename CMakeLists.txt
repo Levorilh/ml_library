@@ -18,13 +18,14 @@ set(linear_HEADER_FILES     src/headers/linear/create.h     src/headers/linear/p
 set(LINEAR ${linear_SOURCE_FILES} ${linear_HEADER_FILES}  )
 
 
-set(RBFN src/rbfn/rbf.cpp src/rbfn/Point.h src/rbfn/Point.cpp)
+set(RBFN src/rbfn/rbf.cpp src/headers/rbfn/rbf.h src/headers/rbfn/Point.h src/rbfn/Point.cpp)
 
 
 
 set(TEST_FILES_LINEAR src/tests/linear_model_tests.cpp src/headers/tests/linear_model_test.h)
 set(TEST_FILES_MLP src/tests/mlp_model_tests.cpp src/headers/tests/mlp_model_test.h)
-set(TEST_FILES ${TEST_FILES_LINEAR} ${TEST_FILES_MLP})
+set(TEST_FILES_RBFN src/tests/rbfn_model_tests.cpp src/headers/tests/rbfn_model_test.h)
+set(TEST_FILES ${TEST_FILES_LINEAR} ${TEST_FILES_MLP} ${TEST_FILES_RBFN})
 
-add_executable(${PROJECT_NAME} ${MAIN} ${LINEAR} #[[${MLP}]]  ${RBFN} ${UTILS} ${TEST_FILES})
+add_executable(${PROJECT_NAME} ${MAIN} ${LINEAR} ${MLP}  ${RBFN} ${UTILS} ${TEST_FILES})
 #add_library(${PROJECT_NAME} SHARED ${LINEAR} ${MLP} ${UTILS})

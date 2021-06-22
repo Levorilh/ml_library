@@ -15,7 +15,7 @@
 
 #include "linear/linear.h"
 #include "mlp/MLP.h"
-
+#include "rbfn/Point.h"
 
 
 #define LIBRARY_MAIN_H

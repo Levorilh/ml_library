@@ -6,9 +6,11 @@
 #define ML_LIBRARY_RBFN_MODEL_TEST_H
 
 #include <iostream>
-#include "../../rbfn/rbf.cpp"
+#include "../rbfn/Point.h"
+#include "../rbfn/rbf.h"
 using namespace std;
 
 void test_get_distance_rbfn();
+void test_kmeans_rbfn();
 
 #endif //ML_LIBRARY_RBFN_MODEL_TEST_H
