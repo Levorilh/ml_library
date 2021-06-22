@@ -6,7 +6,7 @@
 Point** init_kmeans(const int cluster_count, float** dataset , const int dataset_size, const int input_dim){
     auto centroids = new Point *[cluster_count];
     for (int i = 0; i < cluster_count; i++) {
-        centroids[i] = new Point(rand() % cluster_count, dataset[rand() % dataset_size], input_dim);
+        centroids[i] = new Point(i, dataset[rand() % dataset_size], input_dim);
     }
 
     return centroids;
