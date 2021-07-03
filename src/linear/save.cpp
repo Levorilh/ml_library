@@ -11,8 +11,8 @@ DLLEXPORT void save_linear_model(float* model, int input_dim, char *path){
     }
 
     FILE *save_file;
-    fopen_s(&save_file, path , "r");
-    fwrite(  model_to_string.c_str() , sizeof(char) , model_to_string.size() ,save_file);
+    fopen_s(&save_file, path , "w");
+    fwrite(model_to_string.c_str() , sizeof(char) , model_to_string.size() ,save_file);
     fclose(save_file);
 }
 
