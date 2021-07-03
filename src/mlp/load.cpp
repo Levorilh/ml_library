@@ -9,7 +9,7 @@ DLLEXPORT MLP* load_mlp_model(char * path){
     int maxLength = 250;
     FILE *fp;
     fp = fopen(path , "r");
-    char* model_to_string = (char*)malloc(sizeof(maxLength));
+    char* model_to_string = (char*)malloc(sizeof(char) * maxLength);
     int * len = (int*)malloc(sizeof(int));
 
     //d_lenght
@@ -82,7 +82,7 @@ DLLEXPORT MLP* load_mlp_model(char * path){
     result->W = W;
 
     free(len);
-    //free(model_to_string);
+    free(model_to_string);
     fclose(fp);
 
     return result;
