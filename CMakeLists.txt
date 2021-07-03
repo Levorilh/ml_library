@@ -17,6 +17,10 @@ set(linear_HEADER_FILES     src/headers/linear/create.h     src/headers/linear/p
 
 set(LINEAR ${linear_SOURCE_FILES} ${linear_HEADER_FILES}  )
 
+set(svm_SOURCE_FILES    src/svm/create.cpp          )
+set(svm_HEADER_FILES    src/headers/svm/create.h    )
+
+set(SVM ${svm_SOURCE_FILES} ${svm_HEADER_FILES}  )
 
 set(RBFN src/rbfn/rbf.cpp src/headers/rbfn/rbf.h src/headers/rbfn/Point.h src/rbfn/Point.cpp)
 
@@ -25,7 +29,8 @@ set(RBFN src/rbfn/rbf.cpp src/headers/rbfn/rbf.h src/headers/rbfn/Point.h src/rb
 set(TEST_FILES_LINEAR src/tests/linear_model_tests.cpp src/headers/tests/linear_model_test.h)
 set(TEST_FILES_MLP src/tests/mlp_model_tests.cpp src/headers/tests/mlp_model_test.h)
 set(TEST_FILES_RBFN src/tests/rbfn_model_tests.cpp src/headers/tests/rbfn_model_test.h)
-set(TEST_FILES ${TEST_FILES_LINEAR} ${TEST_FILES_MLP} ${TEST_FILES_RBFN})
+set(TEST_FILES_SVM src/tests/svm_model_test.cpp src/headers/tests/svm_model_test.h)
+set(TEST_FILES ${TEST_FILES_LINEAR} ${TEST_FILES_MLP} ${TEST_FILES_RBFN} ${TEST_FILES_SVM})
 
-add_executable(${PROJECT_NAME} ${MAIN} ${LINEAR} ${MLP}  ${RBFN} ${UTILS} ${TEST_FILES})
+add_executable(${PROJECT_NAME} ${MAIN} ${LINEAR} ${MLP}  ${RBFN} ${UTILS} ${TEST_FILES} ${SVM})
 #add_library(${PROJECT_NAME} SHARED ${LINEAR} ${MLP} ${UTILS})

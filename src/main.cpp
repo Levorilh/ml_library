@@ -1,6 +1,9 @@
 #include "headers/tests/mlp_model_test.h"
 #include "headers/tests/linear_model_test.h"
 #include "headers/tests/rbfn_model_test.h"
+#include "headers/tests/svm_model_test.h"
+
+
 
 int main() {
 
@@ -20,6 +23,8 @@ int main() {
 
     test_get_distance_rbfn();
     test_kmeans_rbfn();
+
+//    test_svm_model();
     return 0;
 }
 
