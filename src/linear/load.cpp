@@ -1,25 +1,25 @@
 #include "../headers/linear/load.h"
 
-DLLEXPORT float* load_linear_model(char path[], int* input_dim){
-    int maxLength = 100;
+DLLEXPORT float* load_linear_model(char* path, int* input_dim){
+    int maxLength = 10000;
+    //todo replace maxLength with actual length of file (SEEK_END blablabla)
     FILE *fp;
-    fp = fopen(path , "r");
-    char* model_to_string = (char*)malloc(sizeof(maxLength));
+    errno_t err = fopen_s(&fp, path , "r");
+    if(err != 0){
+        return nullptr;
+    }
+    char* model_to_string = (char*)malloc(sizeof(char)* maxLength);
     fgets(model_to_string, maxLength,fp);
 
-    int * len = (int*)malloc(sizeof(int));
-    char ** s = split(model_to_string, len);
-    float* rslt = (float*)malloc(sizeof(float) * (*len));
-    for(int i =0; i< *len; i++){
-        rslt[i] = atoi(s[i]);
+    char ** s = split(model_to_string, input_dim);
+    auto rslt = (float*)malloc(sizeof(float) * (*input_dim));
+    for(int i =0; i< *input_dim; i++){
+        rslt[i] = strtof(s[i],nullptr);
         free(s[i]);
     }
 
-    *input_dim = (*len) - 1;
-
-    free(len);
     free(s);
-    //free(model_to_string);
+    free(model_to_string);
     fclose(fp);
 
     return rslt;
