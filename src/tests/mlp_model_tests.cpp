@@ -281,4 +281,5 @@ void test_save_mlp_model(){
 
     destroy_mlp_model(model);
     destroy_mlp_model(new_model);
+    free(dims);
 }
