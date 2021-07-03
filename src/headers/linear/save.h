@@ -10,6 +10,6 @@
 #include <iostream>
 #include <fstream>
 
-DLLEXPORT void save_linear_model(float* model, int input_dim, char * path);
+DLLEXPORT void save_linear_model(float* model, int input_dim, char *path);
 
 #endif //ML_LIBRARY_SAVE_H
