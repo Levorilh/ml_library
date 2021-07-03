@@ -56,8 +56,6 @@ DLLEXPORT MLP* load_mlp_model(char * path){
 
     //W
     float*** W = (float***)malloc(sizeof(float**) * d_length);
-    fgets(model_to_string, maxLength,fp);
-    char ** flatenned_W = split(model_to_string, len);
     int cpt = 0;
 
     for(int l = 1; l < d_length; l++){
@@ -69,7 +67,8 @@ DLLEXPORT MLP* load_mlp_model(char * path){
             W[l][i] = W3;
 
             for(int j = 0; j < d[l] + 1; j++){
-                W[l][i][j] = atof(flatenned_W[cpt]);
+                fgets(model_to_string, maxLength,fp);
+                W[l][i][j] = atof(model_to_string);
                 cpt++;
             }
         }
@@ -86,5 +85,5 @@ DLLEXPORT MLP* load_mlp_model(char * path){
     //free(model_to_string);
     fclose(fp);
 
-    return NULL;
+    return result;
 }

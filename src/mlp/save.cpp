@@ -38,7 +38,7 @@ DLLEXPORT void save_mlp_model(MLP* model, char* path){
         for(int i = 0; i < model->d[l-1] + 1; i++){
             for(int j =0; j < model->d[l] + 1; j++){
                 if(l+i+j>1)
-                    fprintf(fp, ";");
+                    fprintf(fp, "\n");
                 fprintf(fp, "%d",model->W[l][i][j]);
             }
         }
