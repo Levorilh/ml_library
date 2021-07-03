@@ -266,6 +266,7 @@ void test_multiclassification_mlp() {
 
 void test_save_mlp_model(){
     //char *path = "C:\\Users\\N\\Desktop\\test_mlp_model.txt";
+    char *path = "C:\\Users\\ttres\\Desktop\\3A\\S2\\MachineLearning\\ml_library\\test_mlp_model.txt";
 
     int total_input_dim = 3;
     int* dims = (int*)malloc(sizeof(int) * total_input_dim);
@@ -275,10 +276,10 @@ void test_save_mlp_model(){
 
     MLP* model = create_mlp_model(dims, total_input_dim);
 
-    //save_mlp_model(model, path);
+    save_mlp_model(model, path);
     
-    //MLP* new_model = load_mlp_model(path);
+    MLP* new_model = load_mlp_model(path);
 
     destroy_mlp_model(model);
-    //destroy_mlp_model(new_model);
+    destroy_mlp_model(new_model);
 }
