@@ -3,11 +3,8 @@
 DLLEXPORT float* load_linear_model(char* path, int* input_dim){
     int maxLength = 10000;
     //todo replace maxLength with actual length of file (SEEK_END blablabla)
-    FILE *fp;
-    errno_t err = fopen_s(&fp, path , "r");
-    if(err != 0){
-        return nullptr;
-    }
+    FILE *fp = fopen(path , "r");
+
     char* model_to_string = (char*)malloc(sizeof(char)* maxLength);
     fgets(model_to_string, maxLength,fp);
 
