@@ -210,10 +210,13 @@ void test_regression_linear_tricky(){
 }
 
 void test_load_linear(){
+    float * model_init = create_linear_model(3);
+    char * path = "C:\\Users\\N\\Desktop\\test_linear_model.txt";
+    save_linear_model(model_init, 3, path);
     int * input_dim = (int*)malloc(sizeof(int));
-    float * model = load_linear_model("C:\\Users\\N\\Desktop\\test_linear_model.txt", input_dim);
-    for(int i =0; i< (*input_dim) +1;i++){
-        cout<<model[i]<<endl;
+    float * model = load_linear_model(path, input_dim);
+    for(int i =0; i< (*input_dim);i++){
+        cout<<model[i]<<":"<<model_init[i]<<endl;
     }
     free(input_dim);
     free(model);
