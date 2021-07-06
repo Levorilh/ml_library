@@ -2,10 +2,9 @@
 // Created by N on 19/06/2021.
 //
 
-#include <xutility>
 #include "../headers/mlp/MLP.h"
 
-DLLEXPORT MLP* load_mlp_model(char * path){
+DLLEXPORT MLP* load_mlp_model(const char * path){
     int maxLength = 250;
     FILE *fp;
     fp = fopen(path , "r");
@@ -27,43 +26,35 @@ DLLEXPORT MLP* load_mlp_model(char * path){
     free(s);
 
     //X
-    /*float** X = (float**)malloc(sizeof(float*) * d_length);
+    auto X = (float**)malloc(sizeof(float*) * d_length);
     for(int i = 0; i<d_length; i++){
-        fgets(model_to_string, maxLength,fp);
-        char ** s = split(model_to_string, len);
-        float* X2 = (float*)malloc(sizeof(float) * (*len));
+        auto X2 = (float*)malloc(sizeof(float) * (*len));
         X[i] = X2;
         for(int j = 0; j < (*len); j++){
-            X[i][j] = atof(s[j]);
-            free(s[j]);
+            X[i][j] = 0;
         }
-        free(s);
-    }*/
+    }
 
     //deltas
-    /*float** deltas = (float**)malloc(sizeof(float*) * d_length);
+    auto deltas = (float**)malloc(sizeof(float*) * d_length);
     for(int i = 0; i<d_length; i++){
-        fgets(model_to_string, maxLength,fp);
-        char ** s = split(model_to_string, len);
-        float* deltas2 = (float*)malloc(sizeof(float) * (*len));
+        auto deltas2 = (float*)malloc(sizeof(float) * (*len));
         X[i] = deltas2;
         for(int j = 0; j < (*len); j++){
-            X[i][j] = atof(s[j]);
-            free(s[j]);
+            X[i][j] = 0;
         }
-        free(s);
-    }*/
+    }
 
     //W
-    float*** W = (float***)malloc(sizeof(float**) * d_length);
+    auto W = (float***)malloc(sizeof(float**) * d_length);
     int cpt = 0;
 
     for(int l = 1; l < d_length; l++){
-        float** W2 = (float**)malloc(sizeof(float*) * d[l-1] + 1);
+        auto W2 = (float**)malloc(sizeof(float*) * d[l-1] + 1);
         W[l] = W2;
 
         for(int i = 0; i < d[l-1] + 1; i++){
-            float* W3 = (float*)malloc(sizeof(float) * d[l] + 1);
+            auto W3 = (float*)malloc(sizeof(float) * d[l] + 1);
             W[l][i] = W3;
 
             for(int j = 0; j < d[l] + 1; j++){
@@ -77,8 +68,8 @@ DLLEXPORT MLP* load_mlp_model(char * path){
     MLP * result = (MLP *)(malloc(sizeof(MLP)));
     result->d_length = d_length;
     result->d = d;
-    //result->deltas = deltas;
-    //result->X = X;
+    result->deltas = deltas;
+    result->X = X;
     result->W = W;
 
     free(len);

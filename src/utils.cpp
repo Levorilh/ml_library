@@ -41,7 +41,7 @@ char ** split(char* str, int* array_len, char delimiter){
 
             ctr++;  //for next word
             j=0;    //for next word, init index to 0
-            memset(substring, ' ', sizeof substring); // reset var substring
+            memset(substring, ' ', strlen(substring)); // reset var substring
         }
         else
         {

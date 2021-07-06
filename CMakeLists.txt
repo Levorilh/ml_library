@@ -32,5 +32,5 @@ set(TEST_FILES_RBFN src/tests/rbfn_model_tests.cpp src/headers/tests/rbfn_model_
 set(TEST_FILES_SVM src/tests/svm_model_test.cpp src/headers/tests/svm_model_test.h)
 set(TEST_FILES ${TEST_FILES_LINEAR} ${TEST_FILES_MLP} ${TEST_FILES_RBFN} ${TEST_FILES_SVM})
 
-#add_executable(${PROJECT_NAME} ${MAIN} ${LINEAR} ${MLP}  ${RBFN} ${UTILS} ${TEST_FILES} ${SVM})
-add_library(${PROJECT_NAME} SHARED ${LINEAR} ${MLP} ${UTILS})
+add_executable(${PROJECT_NAME} ${MAIN} ${LINEAR} ${MLP}  ${RBFN} ${UTILS} ${TEST_FILES} ${SVM})
+#add_library(${PROJECT_NAME} SHARED ${LINEAR} ${MLP} ${UTILS})

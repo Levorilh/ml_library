@@ -1,6 +1,6 @@
 #include "../headers/mlp/MLP.h"
 
-DLLEXPORT void save_mlp_model(MLP* model, char* path){
+DLLEXPORT void save_mlp_model(MLP* model,const char* path){
     FILE* fp = fopen( path, "w" );
     //fprintf(fp, "-d_lenght-\n");
     fprintf(fp, "%d\n",model->d_length);
@@ -39,7 +39,7 @@ DLLEXPORT void save_mlp_model(MLP* model, char* path){
             for(int j =0; j < model->d[l] + 1; j++){
                 if(l+i+j>1)
                     fprintf(fp, "\n");
-                fprintf(fp, "%d",model->W[l][i][j]);
+                fprintf(fp,"%f",model->W[l][i][j]);
             }
         }
     }
