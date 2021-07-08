@@ -61,8 +61,8 @@ DLLEXPORT void destroy_mlp_model(MLP * mlp);
 void destroy_mlp_W_model(MLP *mlp);
 void destroy_mlp_deltas_model(MLP *mlp);
 void destroy_mlp_X_model(MLP *mlp);
-DLLEXPORT void save_mlp_model(MLP* model,const char* path);
-DLLEXPORT MLP* load_mlp_model(const char * path);
+DLLEXPORT void save_mlp_model(MLP* model,char* path);
+DLLEXPORT MLP* load_mlp_model(char * path);
 
 
 #endif //ML_LIBRARY_MLP_H

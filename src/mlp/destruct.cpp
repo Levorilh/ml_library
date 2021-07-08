@@ -1,7 +1,6 @@
 #include "../headers/mlp/MLP.h"
-
-
 void destroy_mlp_prediction(float * prediction){
+    printf("%f %f %f %f", prediction[0], prediction[1], prediction[2], prediction[3]);
     free(prediction);
 }
 
@@ -9,10 +8,9 @@ void destroy_mlp_model(MLP * mlp){
     destroy_mlp_W_model(mlp);
     destroy_mlp_X_model(mlp);
     destroy_mlp_deltas_model(mlp);
-
     free(mlp->d);
     free(mlp);
-    printf("end frees");
+    printf("end frees\n");
 }
 
 void destroy_mlp_X_model(MLP *mlp){

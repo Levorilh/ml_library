@@ -30,7 +30,7 @@ MLP * create_mlp_model(int* npl,const int npl_length){
                 float x = ( ((float)(rand() % 2001)) / 1000.0) - 1.;
                 //std::cout << "Weights initialisation: " << x << std::endl;
                 W[l][i][j] = x;
-                cout << "Weigths: " << W[l][i][j] << endl;
+//                cout << "Weigths: " << W[l][i][j] << endl;
             }
         }
     }
