@@ -2,27 +2,27 @@
 
 using namespace std;
 
-float mean(vector<float*> group,int coord_to_mean) {
-    float sum = 0;
+double mean(vector<double*> group,int coord_to_mean) {
+    double sum = 0;
     for(int i = 0; i < group.size();  i+=1){
         sum += group.at(i)[coord_to_mean];
     }
 //    float sum = accumulate(group.begin(), group.end(), 0.0);
-    float mean = sum / group.size();
+    double mean = sum / (double)(group.size());
     return mean;
 }
 
-Point** init_kmeans(const int cluster_count, float** dataset , const int dataset_size, const int input_dim){
-    auto centroids = new Point *[cluster_count];
+Centroid** init_kmeans(const int cluster_count, double** dataset , const int dataset_size, const int input_dim){
+    auto centroids = new Centroid *[cluster_count];
     for (int i = 0; i < cluster_count; i++) {
-        centroids[i] = new Point(i, dataset[rand() % dataset_size], input_dim);
+        centroids[i] = new Centroid(i, dataset[rand() % dataset_size], input_dim);
     }
 
     return centroids;
 }
 
-Point** kmeans(float **X, int len_X,const int input_dim,const int k,const int max_iters) {
-    Point** clusters = init_kmeans(k , X , len_X , input_dim);
+Centroid** kmeans(double **X, int len_X,const int input_dim,const int k,const int max_iters) {
+    Centroid** clusters = init_kmeans(k , X , len_X , input_dim);
 
 //    for (int i = 0; i < k; i++) {
 //        (*clusters[i]).toString();
@@ -32,13 +32,12 @@ Point** kmeans(float **X, int len_X,const int input_dim,const int k,const int ma
     int current_iter = 0;
     double gap;
     while ((!converged) && (current_iter < max_iters)) {
-        converged = true;
-        vector<vector<float*>> clustered_data(k);
+        vector<vector<double*>> clustered_data(k);
 
         for (int x = 0; x < len_X; x++) {
             vector<double> distances(k);
             int label_min_distance = 0;
-            float* current_elem = X[x];
+            double* current_elem = X[x];
             for(int cluster_pos = 0; cluster_pos < k ; cluster_pos +=1){
 
                 distances[cluster_pos] = clusters[cluster_pos]->distance_to(current_elem);
@@ -55,19 +54,17 @@ Point** kmeans(float **X, int len_X,const int input_dim,const int k,const int ma
         for(int i = 0; i < k ; i +=1){
             for(int j = 0; j < clusters[i]->coord_count ; j+=1){
                 double dim_gap;
-                float curr_dim = clusters[i]->coords[j];
+                double curr_dim = clusters[i]->coords[j];
 
                 clusters[i]->coords[j] = mean(clustered_data[clusters[i]->label]  ,j );
                 dim_gap = abs(curr_dim - clusters[i]->coords[j]);
 
-                if(dim_gap >= MAX_DIM_GAP_ALLOWED){
-                    converged = false;
-                }
+
                 gap += dim_gap;
             }
             clusters[i]->updateSTD(clustered_data[clusters[i]->label]);
         }
-        if(gap < MAX_GAP_ALLOWED){
+        if(gap == 0){
             converged = true;
         }
         current_iter += 1;
@@ -75,23 +72,22 @@ Point** kmeans(float **X, int len_X,const int input_dim,const int k,const int ma
     return clusters;
 }
 
-//float* predict_rbfn(Point** clusters , const int k , const float* X, const int X_size){
-//
-//    float* prediction = new float[k];
-//    for(int i = 0 ; i < k ; i+=1){
-//
-//        float distance  = clusters[i]->distance_to(X);
-//
-//        prediction[i] = 1 / exp(-distance / ))
-////                1 / np.exp(-distance / s ** 2)
-//    }
-//
-//
-//
-//    return prediction;
-//
-//}
+double *predict_rbfn(Centroid **clusters, const int k, const double *X) {
 
+    auto* prediction = new double[k];
+    int s = 2;
+    for(int i = 0 ; i < k ; i+=1){
+
+        double distance  = clusters[i]->distance_to(X);
+
+        prediction[i] = 1. / exp(-distance / pow(clusters[i]->deviation,2));
+    }
+    return prediction;
+}
+
+void destroy_rbfn_prediction(const double* prediction){
+    delete prediction;
+}
 /*
     pattern = np.abs(np.sum(prev_centroids) - np.sum(centroids))
 

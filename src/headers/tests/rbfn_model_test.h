@@ -6,7 +6,7 @@
 #define ML_LIBRARY_RBFN_MODEL_TEST_H
 
 #include <iostream>
-#include "../rbfn/Point.h"
+#include "../rbfn/Centroid.h"
 #include "../rbfn/rbf.h"
 using namespace std;
 
