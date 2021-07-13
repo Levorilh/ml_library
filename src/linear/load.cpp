@@ -5,6 +5,9 @@ DLLEXPORT float* load_linear_model(char* path, int* input_dim){
     //todo replace maxLength with actual length of file (SEEK_END blablabla)
     FILE *fp = fopen(path , "r");
 
+    if(!fp){
+        return nullptr;
+    }
     char* model_to_string = (char*)malloc(sizeof(char)* maxLength);
     fgets(model_to_string, maxLength,fp);
 
