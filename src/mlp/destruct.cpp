@@ -1,6 +1,5 @@
 #include "../headers/mlp/MLP.h"
 void destroy_mlp_prediction(float * prediction){
-    printf("%f %f %f %f", prediction[0], prediction[1], prediction[2], prediction[3]);
     free(prediction);
 }
 

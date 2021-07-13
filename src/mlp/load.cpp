@@ -37,21 +37,21 @@ DLLEXPORT MLP* load_mlp_model(char * path){
     for(int i = 0; i<d_length; i++){
         X[i] = (float*)malloc(sizeof(float) * (*len + 1));
         for(int j = 0; j < (*len + 1); j++){
-            X[i][j] = 0;
+            X[i][j] = j == 0 ? 1. : 0.;
         }
     }
 
     //deltas
-    float** deltas = (float**)malloc(sizeof(float*) * d_length);
+    auto** deltas = (float**)malloc(sizeof(float*) * d_length);
     for(int i = 0; i<d_length; i++){
         deltas[i] = (float*)malloc(sizeof(float) * (*len));
         for(int j = 0; j < (*len); j++){
-            deltas[i][j] = 0;
+            deltas[i][j] = 0.;
         }
     }
 
     //W
-    float*** W = (float***)malloc(sizeof(float**) * d_length);
+    auto*** W = (float***)malloc(sizeof(float**) * d_length);
     for(int l = 0; l < d_length; l++){
         if (l == 0){
             W[l] = (float **)malloc(sizeof(float*)*npl_max);
