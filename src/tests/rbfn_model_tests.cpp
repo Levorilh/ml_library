@@ -74,7 +74,7 @@ void test_kmeans_rbfn() {
 //    data[10][1] = -2.5;
 
 //    for(int i = 0 ; i < 10 ; i += 1) {
-    Centroid *ct1 = new Centroid(1, data[2] , 2);
+    auto *ct1 = new Centroid(1, data[2] , 2);
 //todo make sur all tool functions work
         Centroid **points = kmeans(data, len_X, input_dim, k, max_iters);
 
