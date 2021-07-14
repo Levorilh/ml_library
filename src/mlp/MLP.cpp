@@ -1,7 +1,7 @@
 #include "../headers/mlp/MLP.h"
 
 
-void forward_pass(MLP* mlp,const float sample_inputs[],const bool is_classification)
+void forward_pass(MLP* mlp,const float* sample_inputs,const bool is_classification)
 {
     int L = mlp->d_length - 1;
 

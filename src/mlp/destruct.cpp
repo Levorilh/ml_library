@@ -10,6 +10,7 @@ void destroy_mlp_model(MLP * mlp){
     free(mlp->d);
     free(mlp);
     printf("end frees\n");
+    printf("|%p|" , mlp);
 }
 
 void destroy_mlp_X_model(MLP *mlp){

@@ -1,9 +1,9 @@
 #include "../headers/mlp/MLP.h"
 
 void train_stochastic_gradient_backpropagation(MLP * mlp,
-                                               const float flattened_dataset_inputs[],
+                                               const float* flattened_dataset_inputs,
                                                const int samples_count,
-                                               const float flattened_dataset_expected_outputs[],
+                                               const float* flattened_dataset_expected_outputs,
                                                const bool is_classification,
                                                const float alpha,
                                                const int iterations_count)
@@ -58,8 +58,10 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
             for(int i = 0; i < mlp->d[l-1] + 1; i++)
                 for(int j = 1; j < mlp->d[l] + 1; j++) {
                     mlp->W[l][i][j] -= alpha * mlp->X[l - 1][i] * mlp->deltas[l][j];
-                    // cout << "W[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
+                    cout << "\tW[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
                 }
+
+        cout << "Epoch " << it + 1 << "/" << iterations_count << endl;
 
         free(sample_input);
         free(sample_expected_output);
@@ -81,9 +83,9 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
 
 
 void train_classification_stochastic_gradient_backpropagation_mlp_model(MLP * mlp,
-                                                                        const float flattened_dataset_inputs[],
+                                                                        const float* flattened_dataset_inputs,
                                                                         const int samples_count,
-                                                                        const float flattened_dataset_expected_outputs[],
+                                                                        const float* flattened_dataset_expected_outputs,
                                                                         const float alpha,
                                                                         const int iterations_count) {
     train_stochastic_gradient_backpropagation(mlp,
@@ -97,9 +99,9 @@ void train_classification_stochastic_gradient_backpropagation_mlp_model(MLP * ml
 
 
 void train_regression_stochastic_gradient_backpropagation_mlp_model(MLP * mlp,
-                                                                    const float flattened_dataset_inputs[],
+                                                                    const float* flattened_dataset_inputs,
                                                                     const int samples_count,
-                                                                    const float flattened_dataset_expected_outputs[],
+                                                                    const float* flattened_dataset_expected_outputs,
                                                                     const float alpha,
                                                                     const int iterations_count) {
     train_stochastic_gradient_backpropagation(mlp,
