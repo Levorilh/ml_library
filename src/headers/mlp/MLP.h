@@ -56,7 +56,7 @@ DLLEXPORT void train_regression_stochastic_gradient_backpropagation_mlp_model(ML
 
 
 
-DLLEXPORT void destroy_mlp_prediction(float * prediction);
+DLLEXPORT void destroy_mlp_prediction(const float * prediction);
 DLLEXPORT void destroy_mlp_model(MLP * mlp);
 void destroy_mlp_W_model(MLP *mlp);
 void destroy_mlp_deltas_model(MLP *mlp);

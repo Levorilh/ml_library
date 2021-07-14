@@ -22,9 +22,11 @@ int main() {
 //    test_load_linear();
 
 //    test_get_distance_rbfn();
-    test_kmeans_rbfn();
+//    test_kmeans_rbfn();
 
 //    test_svm_model();
+    test_img_mlp_model();
+
     return 0;
 }
 
