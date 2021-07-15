@@ -66,7 +66,7 @@ DLLEXPORT MLP* load_mlp_model(const char * path){
             for(int j = 0; j < d[l] + 1; j++){
                 model_to_string = fgets(model_to_string, maxLength,fp);
                 W[l][i][j] = strtof(model_to_string, nullptr);
-                cout << "l:" << l << " / i: " << i << " / j:" << j << endl;
+//                cout << "l:" << l << " / i: " << i << " / j:" << j << endl;
             }
         }
     }

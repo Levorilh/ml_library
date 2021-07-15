@@ -40,32 +40,60 @@ void test_kmeans_rbfn() {
 //        cout << endl;
 //    }
 
-    const int len_X = 8;
+    const int len_X = 14;
     const int input_dim = 2;
-    const int k = 2;
-    const int max_iters = 30;
+    const int k = 3;
+    const int max_iters = 100;
 
-    auto** data = new double *[len_X];
+    auto **data = new double *[len_X];
     for (int i = 0; i < len_X; ++i) {
         data[i] = new double[input_dim];
     }
-    data[0][0] = 1.;
+    data[0][0] = -3.;
     data[0][1] = 3.;
-    data[1][0] = 2.;
-    data[1][1] = 3.;
-    data[2][0] = 1.;
-    data[2][1] = 2.;
-    data[3][0] = 2.;
+
+    data[1][0] = -3.;
+    data[1][1] = 2.;
+
+    data[2][0] = -4.;
+    data[2][1] = 3.;
+
+    data[3][0] = -4.;
     data[3][1] = 2.;
+
 
     data[4][0] = 4.;
     data[4][1] = 1.;
+
     data[5][0] = 5.;
     data[5][1] = 1.;
-    data[6][0] = 0.5;
-    data[6][1] = 4.;
-    data[7][0] = 0.5;
-    data[7][1] = 5.;
+
+    data[6][0] = 4;
+    data[6][1] = 0.5;
+
+    data[7][0] = 5;
+    data[7][1] = 0.5;
+
+    data[8][0] = -3.5;
+    data[8][1] = 3.5;
+
+    data[9][0] = 4.5;
+    data[9][1] = 1.5;
+
+    data[10][0] = 1.;
+    data[10][1] = 4.5;
+
+    data[11][0] = 1.;
+    data[11][1] = 4.;
+
+
+    data[12][0] = 1.5;
+    data[12][1] = 4.5;
+
+    data[13][0] = 1.5;
+    data[13][1] = 4.;
+
+
 //    data[8][0] = -1.5;
 //    data[8][1] = -1.9;
 //    data[9][0] = 2.3;
@@ -74,39 +102,25 @@ void test_kmeans_rbfn() {
 //    data[10][1] = -2.5;
 
 //    for(int i = 0 ; i < 10 ; i += 1) {
-    auto *ct1 = new Centroid(1, data[2] , 2);
+    auto *ct1 = new Centroid(1, data[2], 2);
 //todo make sur all tool functions work
-        Centroid **points = kmeans(data, len_X, input_dim, k, max_iters);
+    Centroid **points = kmeans(data, len_X, input_dim, k, max_iters);
 
-        cout << "middle 1 : " << points[0]->coords[0] << "  "
-             << points[0]->coords[1] /*<< "  " << points[0]->coords[2] << "  " << points[0]->coords[3]*/ << "  "
-             << endl;
-        cout << "middle 2 : " << points[1]->coords[0] << "  "
-             << points[1]->coords[1] /*<< "  " << points[1]->coords[2] << "  " << points[1]->coords[3]*/ << "  "
-             << endl;
-
-        cout << "var 1 : " << points[0]->deviation << endl;
-        cout << "var 2 : " << points[1]->deviation << endl;
-        //    delete[] data;
-        delete[] points;
-//    }
-//    cout << endl;
-//    cout << endl;
-//    cout << endl;
-
-//    auto* data_input = new double[2];
-//    data_input[0] = -5;
-//    data_input[1] = -2;
-//    double* predict1 = predict_rbfn(points , k , data_input);
+//    cout << "middle 1 : " << points[0]->coords[0] << "  "
+//         << points[0]->coords[1] /*<< "  " << points[0]->coords[2] << "  " << points[0]->coords[3]*/ << "  "
+//         << endl;
+//    cout << "middle 2 : " << points[1]->coords[0] << "  "
+//         << points[1]->coords[1] /*<< "  " << points[1]->coords[2] << "  " << points[1]->coords[3]*/ << "  "
+//         << endl;
 //
-//    for( int i = 0 ; i < points[0]->coord_count ; i += 1){
-//        cout << " valeur " << i << " vaut : " << predict1[i] << endl;
+//    cout << "middle 3 : " << points[2]->coords[0] << "  "
+//         << points[2]->coords[1] /*<< "  " << points[1]->coords[2] << "  " << points[1]->coords[3]*/ << "  "
+//         << endl;
+
+
+//        cout << "var 1 : " << points[0]->deviation << endl;
+//        cout << "var 2 : " << points[1]->deviation << endl;
+    //    delete[] data;
+    delete[] points;
 //    }
-//
-//    destroy_rbfn_prediction(predict1);
-//    delete[] points;
 }
-
-// middle 1 -> point : 3.04
-
-// middle 2 -> point : 13.13

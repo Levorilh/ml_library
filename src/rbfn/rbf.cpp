@@ -2,6 +2,7 @@
 
 using namespace std;
 
+
 double mean(vector<double*> group,int coord_to_mean) {
     double sum = 0;
     for(int i = 0; i < group.size();  i+=1){
@@ -32,6 +33,7 @@ Centroid** kmeans(double **X, int len_X,const int input_dim,const int k,const in
     int current_iter = 0;
     double gap;
     while ((!converged) && (current_iter < max_iters)) {
+        printf("iter : %d/%d\n",  current_iter+1, max_iters);
         vector<vector<double*>> clustered_data(k);
 
         for (int x = 0; x < len_X; x++) {
@@ -50,7 +52,10 @@ Centroid** kmeans(double **X, int len_X,const int input_dim,const int k,const in
 //            cout << label_min_distance << endl;
         }
 
-        gap = 0;
+        printf("points pour cluster 1 : %llu\n" , clustered_data[0].size() );
+        printf("points pour cluster 2 : %llu\n" , clustered_data[1].size() );
+        printf("points pour cluster 3 : %llu\n" , clustered_data[2].size() );
+        gap = 0.;
         for(int i = 0; i < k ; i +=1){
             for(int j = 0; j < clusters[i]->coord_count ; j+=1){
                 double dim_gap;
@@ -61,10 +66,12 @@ Centroid** kmeans(double **X, int len_X,const int input_dim,const int k,const in
 
 
                 gap += dim_gap;
+                printf("cluster %d coord %d / somme des ecarts : %lf\n" ,i  ,j ,dim_gap);
             }
             clusters[i]->updateSTD(clustered_data[clusters[i]->label]);
         }
-        if(gap == 0){
+        if(gap < MAX_GAP_ALLOWED ){
+            printf("sortie prematuree\n");
             converged = true;
         }
         current_iter += 1;
@@ -72,10 +79,10 @@ Centroid** kmeans(double **X, int len_X,const int input_dim,const int k,const in
     return clusters;
 }
 
-double *predict_rbfn(Centroid **clusters, const int k, const double *X) {
+double *predict_kmeans(Centroid **clusters, const int k, const double *X) {
 
     auto* prediction = new double[k];
-    int s = 2;
+
     for(int i = 0 ; i < k ; i+=1){
 
         double distance  = clusters[i]->distance_to(X);
@@ -87,6 +94,44 @@ double *predict_rbfn(Centroid **clusters, const int k, const double *X) {
 
 void destroy_rbfn_prediction(const double* prediction){
     delete prediction;
+}
+
+MatrixXd train_rbfn_model(double **flattened_dataset_inputs,
+                      int samples_count,
+                      double **flattened_dataset_expected_outputs,
+                      const int input_dim,
+                      const int k,
+                      const int max_iters) {
+
+    Centroid** clusters = kmeans(flattened_dataset_inputs, samples_count, input_dim, k, max_iters);
+
+    MatrixXd X(samples_count, input_dim);
+    for (int i = 0; i < samples_count; i++) {
+        auto* RBF_X = predict_kmeans(clusters, k, flattened_dataset_inputs[i]);
+        for(int j = 0 ; j < input_dim; j += 1){
+            X(i,j) = RBF_X[j];
+        }
+    }
+
+    MatrixXd Y(input_dim, k);
+    for (int i = 0; i < samples_count; i++) {
+        for (int j = 0; j < k; j++) {
+            Y(i, j) = flattened_dataset_expected_outputs[i][j];
+        }
+    }
+
+    MatrixXd W = ((X.transpose() * X).inverse() * X.transpose()) * Y;
+    return W;
+}
+
+double *predict_rbfn(double *flattened_dataset_inputs, MatrixXd W) {
+    auto* prediction = new float*[];
+    for (int i = 0; i < samples_count; i++) {
+        auto* RBF_X = predict_kmeans(clusters, k, flattened_dataset_inputs[i]);
+        for(int j = 0 ; j < input_dim; j += 1){
+            X(i,j) = RBF_X[j];
+        }
+    }
 }
 /*
     pattern = np.abs(np.sum(prev_centroids) - np.sum(centroids))
