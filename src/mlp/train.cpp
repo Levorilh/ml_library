@@ -58,7 +58,7 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
             for(int i = 0; i < mlp->d[l-1] + 1; i++)
                 for(int j = 1; j < mlp->d[l] + 1; j++) {
                     mlp->W[l][i][j] -= alpha * mlp->X[l - 1][i] * mlp->deltas[l][j];
-                    cout << "\tW[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
+                    //cout << "\tW[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
                 }
 
         cout << "Epoch " << it + 1 << "/" << iterations_count << endl;

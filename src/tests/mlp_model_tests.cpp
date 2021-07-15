@@ -267,8 +267,8 @@ void test_multiclassification_mlp() {
 void test_save_mlp_model(){
     //char *path = "C:\\Users\\N\\Desktop\\test_mlp_model.txt";
     //char *path = "C:\\Users\\ttres\\Desktop\\3A\\S2\\MachineLearning\\ml_library\\test_mlp_model.txt";
-    //const char* path = "/Users/redamaizate/Documents/3IABD/Projet-Annuel\\ml_library\\src\\tests\\tests_mlp_model.txt";
-    char* path = "test_mlp_save.txt";
+    const char* path = "/Users/redamaizate/Documents/3IABD/Projet-Annuel\\ml_library\\src\\tests\\tests_mlp_model.txt";
+    //char* path = "test_mlp_save.txt";
 
     int total_input_dim = 3;
     int* dims = (int*)malloc(sizeof(int) * total_input_dim);

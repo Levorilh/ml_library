@@ -4,18 +4,19 @@
 
 #include "../headers/mlp/MLP.h"
 
-DLLEXPORT MLP* load_mlp_model(char * path){
+DLLEXPORT MLP* load_mlp_model(const char * path){
     int maxLength = 250;
     FILE *fp;
     fp = fopen(path , "r");
     if(!fp){
         return nullptr;
     }
+    cout << "LE FICHIER EXISTE WLH!" << endl;
     int npl_max = 0;
     char* model_to_string = (char*)malloc(sizeof(char) * maxLength);
     int * len = (int*)malloc(sizeof(int));
 
-    //d_lenght
+    //d_length
     fgets(model_to_string, maxLength,fp);
     int d_length = strtol(model_to_string, nullptr, 10);
 
@@ -65,6 +66,7 @@ DLLEXPORT MLP* load_mlp_model(char * path){
             for(int j = 0; j < d[l] + 1; j++){
                 model_to_string = fgets(model_to_string, maxLength,fp);
                 W[l][i][j] = strtof(model_to_string, nullptr);
+                cout << "l:" << l << " / i: " << i << " / j:" << j << endl;
             }
         }
     }
