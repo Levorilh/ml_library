@@ -22,12 +22,8 @@ Centroid** init_kmeans(const int cluster_count, double** dataset , const int dat
     return centroids;
 }
 
-Centroid** kmeans(double **X, int len_X,const int input_dim,const int k,const int max_iters) {
+Centroid** train_kmeans(double **X, int len_X,const int input_dim,const int k,const int max_iters) {
     Centroid** clusters = init_kmeans(k , X , len_X , input_dim);
-
-//    for (int i = 0; i < k; i++) {
-//        (*clusters[i]).toString();
-//    }
 
     bool converged = false;
     int current_iter = 0;
@@ -96,14 +92,14 @@ void destroy_rbfn_prediction(const double* prediction){
     delete prediction;
 }
 
-MatrixXd train_rbfn_model(double **flattened_dataset_inputs,
+void train_rbfn_model(double **flattened_dataset_inputs,
                       int samples_count,
                       double **flattened_dataset_expected_outputs,
                       const int input_dim,
                       const int k,
                       const int max_iters) {
 
-    Centroid** clusters = kmeans(flattened_dataset_inputs, samples_count, input_dim, k, max_iters);
+    Centroid** clusters = train_kmeans(flattened_dataset_inputs, samples_count, input_dim, k, max_iters);
 
     MatrixXd X(samples_count, input_dim);
     for (int i = 0; i < samples_count; i++) {
@@ -121,7 +117,7 @@ MatrixXd train_rbfn_model(double **flattened_dataset_inputs,
     }
 
     MatrixXd W = ((X.transpose() * X).inverse() * X.transpose()) * Y;
-    return W;
+    //RBFN->W =
 }
 
 double *predict_rbfn(double *flattened_dataset_inputs, MatrixXd W) {

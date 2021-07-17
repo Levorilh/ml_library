@@ -11,7 +11,17 @@
 
 #define MAX_DIM_GAP_ALLOWED 0.001
 #define MAX_GAP_ALLOWED 0.000001
-Centroid** kmeans(double **X, int len_X,const int input_dim,const int k ,const int max_iters = 200);
+
+class RBFN_t{
+public:
+    int k;
+    int num_classes;
+    float*** W;
+    int max_iterations;
+};
+typedef class RBFN_t RBFN;
+
+Centroid** train_kmeans(double **X, int len_X,const int input_dim,const int k ,const int max_iters = 200);
 Centroid** init_kmeans(const int cluster_count, double** dataset , const int dataset_size, const int input_dim);
 
 double *predict_kmeans(Centroid **clusters, const int k, const float *X);
