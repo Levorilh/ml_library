@@ -14,8 +14,9 @@ double mean(vector<double*> group,int coord_to_mean) {
 }
 
 Centroid** init_kmeans(const int cluster_count, double** dataset , const int dataset_size, const int input_dim){
-    auto centroids = new Centroid *[cluster_count];
+    auto centroids = (Centroid **)malloc(sizeof(Centroid *) * cluster_count);//new Centroid *[cluster_count];
     for (int i = 0; i < cluster_count; i++) {
+        centroids[i] = (Centroid *)malloc(sizeof(Centroid));
         centroids[i] = new Centroid(i, dataset[rand() % dataset_size], input_dim);
     }
 
@@ -100,6 +101,11 @@ RBF * create_rbfn_model(int input_dim, int num_classes, int k){
     rbf->k = k;
     rbf->samples_count = 0;
 
+    rbf->clusters = (Centroid **)malloc(sizeof(Centroid *) * k);
+    for(int i = 0; i < k; i++){
+        rbf->clusters[i] = (Centroid *)malloc(sizeof(Centroid));
+    }
+
     rbf->W = (double**)malloc(sizeof(double*) * input_dim);
     for(int i = 0; i < input_dim; i++){
         rbf->W[i] = (double*)malloc(sizeof(double) * num_classes);
@@ -136,10 +142,12 @@ void train_rbfn_model(RBF * model,
         dataset_inputs[i] = (double*)malloc(sizeof(double) * model->input_dim);
         for(int j = 0; j < model->input_dim; j++){
             dataset_inputs[i][j] = flattened_dataset_inputs[j + i * model->input_dim];
+            //cout << "dataset_inputs ["<<i<<","<<j<<"] :" << dataset_inputs[i][j] << " | " << j + i * model->input_dim << endl;
         }
         dataset_expected_outputs[i] = (double*)malloc(sizeof(double) * model->num_classes);
         for(int j = 0; j < model->num_classes; j++){
             dataset_expected_outputs[i][j] = flattened_dataset_expected_outputs[j + i * model->num_classes];
+            //cout << "dataset_expected_outputs ["<<i<<","<<j<<"] :" << dataset_expected_outputs[i][j] << endl;
         }
     }
 
@@ -153,6 +161,7 @@ void train_rbfn_model(RBF * model,
             X(i,j) = RBF_X[j];
             cout <<"X[" << i << ":" << j << "]=" << X(i,j) << endl;
         }
+        destroy_rbfn_prediction(RBF_X);
     }
 
     MatrixXd Y(samples_count, model->num_classes);
@@ -182,12 +191,14 @@ void train_rbfn_model(RBF * model,
 
 double *predict_rbfn(RBF *model, double *flattened_dataset_inputs) {
     auto* prediction = (double*)malloc(sizeof(double) * model->num_classes);
-
     MatrixXd X(1, model->input_dim);
+    //cout << "cluster 0 :" << model->clusters[0] << endl;
     auto* RBF_X = predict_kmeans(model->clusters, model->k, flattened_dataset_inputs);
     for(int j = 0 ; j < model->input_dim; j += 1){
         X(0,j) = RBF_X[j];
+        cout << "RBF X ["<<j<<"] : "<< RBF_X[j]<<endl;
     }
+    free(RBF_X);
 
     MatrixXd W(model->input_dim, model->num_classes);
     for(int i =0; i < model->input_dim; i++){

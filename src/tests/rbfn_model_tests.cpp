@@ -6,16 +6,31 @@
 
 void test_rbfn(){
     // XOR
-    double flatenned_input[] =  {0., 0., 1., 1., 0., 1., 1., 0.};
-    double flatenned_output[] = {1., 0., 1., 0., 0., 1., 0., 1.};
-
-    double test_input[] = {0., 0.};
-    double test_output_expected[] = {0., 0.};
-
     int input_dim = 2;
-    int samples_count = 4;
+    int samples_count = 8;
     int num_classes = 2;
     int k = 2;
+
+    double * flatenned_input = (double*)malloc(sizeof(double)*samples_count*input_dim);
+    double input[] =  {0., 0., 1., 1., 0., 1., 1., 0., 0., 0., 1., 1., 0., 1., 1., 0.};
+    for(int i = 0; i < samples_count*input_dim; i++){
+        flatenned_input[i] = input[i];
+    }
+    double * flatenned_output = (double*)malloc(sizeof(double)*samples_count*num_classes);
+    double output[] =  {1., 0., 1., 0., 0., 1., 0., 1., 1., 0., 1., 0., 0., 1., 0., 1.};
+    for(int i = 0; i < samples_count*num_classes; i++){
+        flatenned_output[i] = output[i];
+    }
+    double * test_input = (double*)malloc(sizeof(double)*input_dim);
+    double tinput[] =  {0., 0.};
+    for(int i = 0; i < input_dim; i++){
+        test_input[i] = tinput[i];
+    }
+    double * test_output_expected = (double*)malloc(sizeof(double)*num_classes);
+    double toutput[] =  {1., 0.};
+    for(int i = 0; i < num_classes; i++){
+        test_output_expected[i] = toutput[i];
+    }
 
     RBF* model = create_rbfn_model(input_dim,num_classes, k);
     train_rbfn_model(model,flatenned_input,samples_count,flatenned_output);
@@ -24,6 +39,12 @@ void test_rbfn(){
     for(int i =0; i < num_classes; i++){
         cout << "predict classe [" << i <<"] : " << rslt[i] << " | expected : " << test_output_expected[i] << endl;
     }
+
+    free(rslt);
+    free(flatenned_input);
+    free(flatenned_output);
+    free(test_input);
+    free(test_output_expected);
 }
 
 void test_get_distance_rbfn() {
