@@ -4,6 +4,28 @@
 
 #include "../headers/tests/rbfn_model_test.h"
 
+void test_rbfn(){
+    // XOR
+    double flatenned_input[] =  {0., 0., 1., 1., 0., 1., 1., 0.};
+    double flatenned_output[] = {1., 0., 1., 0., 0., 1., 0., 1.};
+
+    double test_input[] = {0., 0.};
+    double test_output_expected[] = {0., 0.};
+
+    int input_dim = 2;
+    int samples_count = 4;
+    int num_classes = 2;
+    int k = 2;
+
+    RBF* model = create_rbfn_model(input_dim,num_classes, k);
+    train_rbfn_model(model,flatenned_input,samples_count,flatenned_output);
+    double * rslt = predict_rbfn(model,test_input);
+
+    for(int i =0; i < num_classes; i++){
+        cout << "predict classe [" << i <<"] : " << rslt[i] << " | expected : " << test_output_expected[i] << endl;
+    }
+}
+
 void test_get_distance_rbfn() {
     double x1[] = {3, 2, 3};
     int len_x1 = 3;
@@ -104,7 +126,7 @@ void test_kmeans_rbfn() {
 //    for(int i = 0 ; i < 10 ; i += 1) {
     auto *ct1 = new Centroid(1, data[2], 2);
 //todo make sur all tool functions work
-    Centroid **points = kmeans(data, len_X, input_dim, k, max_iters);
+    Centroid **points = train_kmeans(data, len_X, input_dim, k, max_iters);
 
 //    cout << "middle 1 : " << points[0]->coords[0] << "  "
 //         << points[0]->coords[1] /*<< "  " << points[0]->coords[2] << "  " << points[0]->coords[3]*/ << "  "
