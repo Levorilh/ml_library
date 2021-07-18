@@ -19,11 +19,11 @@ int main() {
 //    test_regression_linear_tricky();
 
 //    test_save_mlp_model();
-    test_load_mlp_model();
 //    test_load_linear();
 
 //    test_get_distance_rbfn();
 //    test_kmeans_rbfn();
+    test_rbfn();
 
 //    test_svm_model();
 //    test_img_mlp_model();
