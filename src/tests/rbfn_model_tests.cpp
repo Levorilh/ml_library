@@ -5,29 +5,32 @@
 #include "../headers/tests/rbfn_model_test.h"
 
 void test_rbfn(){
-    // XOR
     int input_dim = 2;
-    int samples_count = 8;
+    int samples_count = 10;
     int num_classes = 2;
     int k = 2;
 
     double * flatenned_input = (double*)malloc(sizeof(double)*samples_count*input_dim);
-    double input[] =  {0., 0., 1., 1., 0., 1., 1., 0., 0., 0., 1., 1., 0., 1., 1., 0.};
+    double input[] =  {-3., 3., -3., 2., -4., 2., -4., 3., -3.5, 3.5, 4., 1., 5., 1., 4., 0.5, 5., 0.5, 4.5, 1.5};
+            //{0., 0., 1., 1., 0., 1., 1., 0., 0., 0., 1., 1., 0., 1., 1., 0.};
     for(int i = 0; i < samples_count*input_dim; i++){
         flatenned_input[i] = input[i];
     }
     double * flatenned_output = (double*)malloc(sizeof(double)*samples_count*num_classes);
-    double output[] =  {1., 0., 1., 0., 0., 1., 0., 1., 1., 0., 1., 0., 0., 1., 0., 1.};
+    double output[] =  {1., 0., 1., 0., 1., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 1., 0., 1., 0., 1.};
+            //{1., 0., 0., 1., 1., 0., 0., 1., 0., 0., 1., 1., 0., 1., 1., 0.};
     for(int i = 0; i < samples_count*num_classes; i++){
         flatenned_output[i] = output[i];
     }
     double * test_input = (double*)malloc(sizeof(double)*input_dim);
-    double tinput[] =  {0., 0.};
+    double tinput[] = {-5., 4.};
+            //{1., 1.};
     for(int i = 0; i < input_dim; i++){
         test_input[i] = tinput[i];
     }
     double * test_output_expected = (double*)malloc(sizeof(double)*num_classes);
-    double toutput[] =  {1., 0.};
+    double toutput[] = {1., 0.};
+            //{0., 1.};
     for(int i = 0; i < num_classes; i++){
         test_output_expected[i] = toutput[i];
     }
