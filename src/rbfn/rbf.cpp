@@ -14,10 +14,15 @@ double mean(vector<double*> group,int coord_to_mean) {
 }
 
 Centroid** init_kmeans(const int cluster_count, double** dataset , const int dataset_size, const int input_dim){
-    auto centroids = (Centroid **)malloc(sizeof(Centroid *) * cluster_count);//new Centroid *[cluster_count];
+    Centroid ** centroids = (Centroid **)malloc(sizeof(Centroid *) * cluster_count);//new Centroid *[cluster_count];
     for (int i = 0; i < cluster_count; i++) {
         centroids[i] = (Centroid *)malloc(sizeof(Centroid));
-        centroids[i] = new Centroid(i, dataset[rand() % dataset_size], input_dim);
+        double * dataset_row_copy = (double*)malloc(sizeof(double)*input_dim);
+        int random_index = rand() % dataset_size;
+        for(int i = 0; i < input_dim; i++){
+            dataset_row_copy[i] = dataset[random_index][i];
+        }
+        centroids[i] = new Centroid(i, dataset_row_copy/*dataset[rand() % dataset_size]*/, input_dim);
     }
 
     return centroids;

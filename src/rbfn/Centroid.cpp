@@ -11,6 +11,7 @@ Centroid::Centroid() {
 
 Centroid::Centroid(int label, double *coords, int coord_count) {
     this->label = label;
+    this->coords = (double*)malloc(sizeof(double)*coord_count);
     this->coords = coords;
     this->coord_count = coord_count;
     this->deviation = 0;
