@@ -12,18 +12,13 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
     const int output_dim = mlp->d[mlp->d_length - 1];
     const int L = mlp->d_length - 1;
 
-    /*
-    cout << endl;
+    const int ONE_PERCENT = iterations_count/100;
+    const int FIVE_PERCENT = ONE_PERCENT * 5;
 
-    cout << "Weights initialisation: " << endl;
-    for(int l = 1; l < L + 1; l++)
-        for(int i = 0; i < mlp->d[l-1] + 1; i++)
-            for(int j = 1; j < mlp->d[l] + 1; j++) {
-                cout << "W[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
-            }
-    cout << endl;
-    */
     for(int it = 0; it < iterations_count; it++){
+        if(it % FIVE_PERCENT == 1){
+            cout << "train " << it/FIVE_PERCENT * 5 << "% complete " << endl;
+        }
         int k = rand() % samples_count;
 
         auto * sample_input = (float *)malloc(sizeof(float) * input_dim);
@@ -60,8 +55,6 @@ void train_stochastic_gradient_backpropagation(MLP * mlp,
                     mlp->W[l][i][j] -= alpha * mlp->X[l - 1][i] * mlp->deltas[l][j];
                     //cout << "\tW[" << l << "][" << i << "][" << j << "] : " << mlp->W[l][i][j] << endl;
                 }
-
-        cout << "Epoch " << it + 1 << "/" << iterations_count << endl;
 
         free(sample_input);
         free(sample_expected_output);

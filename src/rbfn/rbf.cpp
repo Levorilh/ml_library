@@ -124,15 +124,15 @@ MatrixXd train_rbfn_model(double **flattened_dataset_inputs,
     return W;
 }
 
-double *predict_rbfn(double *flattened_dataset_inputs, MatrixXd W) {
-    auto* prediction = new float*[];
-    for (int i = 0; i < samples_count; i++) {
-        auto* RBF_X = predict_kmeans(clusters, k, flattened_dataset_inputs[i]);
-        for(int j = 0 ; j < input_dim; j += 1){
-            X(i,j) = RBF_X[j];
-        }
-    }
-}
+//double *predict_rbfn(double *flattened_dataset_inputs, MatrixXd W) {
+//    auto* prediction = new float*[];
+//    for (int i = 0; i < samples_count; i++) {
+//        auto* RBF_X = predict_kmeans(clusters, k, flattened_dataset_inputs[i]);
+//        for(int j = 0 ; j < input_dim; j += 1){
+//            X(i,j) = RBF_X[j];
+//        }
+//    }
+//}
 /*
     pattern = np.abs(np.sum(prev_centroids) - np.sum(centroids))
 
