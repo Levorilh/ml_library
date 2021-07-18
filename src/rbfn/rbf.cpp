@@ -94,11 +94,11 @@ double *predict_kmeans(Centroid **clusters, const int k, const double *X) {
     return prediction;
 }
 
-void destroy_rbfn_prediction(const double* prediction){
+DLLEXPORT void destroy_rbfn_prediction(const double* prediction){
     delete prediction;
 }
 
-RBF * create_rbfn_model(int input_dim, int num_classes, int k){
+DLLEXPORT RBF * create_rbfn_model(int input_dim, int num_classes, int k){
     RBF * rbf = (RBF*)malloc(sizeof(RBF));
 
     rbf->num_classes = num_classes;
@@ -122,7 +122,7 @@ RBF * create_rbfn_model(int input_dim, int num_classes, int k){
     return rbf;
 }
 
-void destroy_rbfn_model(RBF* model){
+DLLEXPORT void destroy_rbfn_model(RBF* model){
     for(int i = 0; i < model->input_dim; i++){
         free(model->W[i]);
     }
@@ -134,7 +134,7 @@ void destroy_rbfn_model(RBF* model){
     free(model);
 }
 
-void train_rbfn_model(RBF * model,
+DLLEXPORT void train_rbfn_model(RBF * model,
                       double *flattened_dataset_inputs,
                       int samples_count,
                       double *flattened_dataset_expected_outputs,
@@ -194,7 +194,7 @@ void train_rbfn_model(RBF * model,
     free(dataset_expected_outputs);
 }
 
-double *predict_rbfn(RBF *model, double *flattened_dataset_inputs) {
+DLLEXPORT double *predict_rbfn(RBF *model, double *flattened_dataset_inputs) {
     auto* prediction = (double*)malloc(sizeof(double) * model->num_classes);
     MatrixXd X(1, model->input_dim);
     //cout << "cluster 0 :" << model->clusters[0] << endl;
@@ -219,16 +219,3 @@ double *predict_rbfn(RBF *model, double *flattened_dataset_inputs) {
 
     return prediction;
 }
-
-//        vector cluster_list = [[] for i in range(len(centroids))]
-//        for (int x = 0; x < len_X; x++) {
-//            // distances_list = []
-//            for (int c = 0; c < k; c++) {
-//                distances_list[c] = get_distance(c, len_X, x);
-//            }
-//            // cluster_list[int(np.argmin(distances_list))].append(x)
-//        }
-//
-//        // cluster_list = list((filter(None, cluster_list)))
-//        float *new_centroids[k];
-//    }
