@@ -11,5 +11,6 @@ void test_classification_mlp();
 void test_multiclassification_mlp();
 void test_save_mlp_model();
 void test_img_mlp_model();
+void test_load_mlp_model();
 
 #endif //ML_LIBRARY_MLP_MODEL_TESTS_H

@@ -5,13 +5,12 @@
 #include "../headers/mlp/MLP.h"
 
 DLLEXPORT MLP* load_mlp_model(const char * path){
-    int maxLength = 250;
+    const int maxLength = 250;
     FILE *fp;
     fp = fopen(path , "r");
     if(!fp){
         return nullptr;
     }
-    cout << "LE FICHIER EXISTE WLH!" << endl;
     int npl_max = 0;
     char* model_to_string = (char*)malloc(sizeof(char) * maxLength);
     int * len = (int*)malloc(sizeof(int));
@@ -25,7 +24,7 @@ DLLEXPORT MLP* load_mlp_model(const char * path){
     char ** s = split(model_to_string, len);
     int* d = (int*)malloc(sizeof(int) * (*len));
     for(int i =0; i< *len; i++){
-        d[i] = atoi(s[i]);
+        d[i] = strtol(s[i] , nullptr , 10);
         if(d[i] > npl_max){
             npl_max = d[i];
         }
@@ -34,10 +33,10 @@ DLLEXPORT MLP* load_mlp_model(const char * path){
     free(s);
 
     //X
-    auto** X = (float**)malloc(sizeof(float*) * d_length);
+    auto X = (float**)malloc(sizeof(float*) * d_length);
     for(int i = 0; i<d_length; i++){
-        X[i] = (float*)malloc(sizeof(float) * (*len + 1));
-        for(int j = 0; j < (*len + 1); j++){
+        X[i] = (float*)malloc(sizeof(float) * (d[i] + 1));
+        for(int j = 0; j < d[i] + 1; j++){
             X[i][j] = j == 0 ? 1. : 0.;
         }
     }
@@ -66,7 +65,6 @@ DLLEXPORT MLP* load_mlp_model(const char * path){
             for(int j = 0; j < d[l] + 1; j++){
                 model_to_string = fgets(model_to_string, maxLength,fp);
                 W[l][i][j] = strtof(model_to_string, nullptr);
-//                cout << "l:" << l << " / i: " << i << " / j:" << j << endl;
             }
         }
     }

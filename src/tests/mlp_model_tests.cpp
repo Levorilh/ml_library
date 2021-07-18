@@ -266,15 +266,15 @@ void test_multiclassification_mlp() {
 
 void test_save_mlp_model(){
     //char *path = "C:\\Users\\N\\Desktop\\test_mlp_model.txt";
-    //char *path = "C:\\Users\\ttres\\Desktop\\3A\\S2\\MachineLearning\\ml_library\\test_mlp_model.txt";
-    const char* path = "/Users/redamaizate/Documents/3IABD/Projet-Annuel\\ml_library\\src\\tests\\tests_mlp_model.txt";
+    char *path = "C:\\Users\\ttres\\Desktop\\3A\\S2\\MachineLearning\\ml_library\\test_mlp_model.txt";
+//    const char* path = "/Users/redamaizate/Documents/3IABD/Projet-Annuel\\ml_library\\src\\tests\\tests_mlp_model.txt";
     //char* path = "test_mlp_save.txt";
 
     int total_input_dim = 3;
     int* dims = (int*)malloc(sizeof(int) * total_input_dim);
-    dims[0] = 1;
+    dims[0] = 2;
     dims[1] = 3;
-    dims[2] = 1;
+    dims[2] = 2;
 
     MLP* model = create_mlp_model(dims, total_input_dim);
 
@@ -282,7 +282,30 @@ void test_save_mlp_model(){
     
     MLP* new_model = load_mlp_model(path);
 
-    //predict_mlp_model_classification()
+    auto** X = (float**)malloc(sizeof(float*) * 2);
+    X[0] = (float*)malloc(sizeof(float) * 2);
+    X[1] = (float*)malloc(sizeof(float) * 2);
+
+    X[0][0] = 1.f;
+    X[0][1] = 1.f;
+
+    X[1][0] = 1.f;
+    X[1][1] = 1.f;
+
+    float* pred = predict_mlp_model_classification(new_model , X[0] );
+
+    cout << "res 1 : " << pred[0] << "  " << pred[1] << endl;
+
+    free(pred);
+    pred = predict_mlp_model_classification(new_model , X[1] );
+    cout << "res 2 : " << pred[0] << "  " << pred[1] << endl;
+    free(pred);
+
+
+    pred = predict_mlp_model_classification(model , X[1] );
+    cout << "res 3 : " << pred[0] << "  " << pred[1] << endl;
+    free(pred);
+
 
     destroy_mlp_model(model);
     destroy_mlp_model(new_model);
@@ -506,4 +529,20 @@ void test_img_mlp_model(){
 
     delete[] img;
     delete[] layers;
+}
+
+
+void test_load_mlp_model(){
+    MLP* model = load_mlp_model(R"(C:\Users\ttres\Desktop\3A\S2\MachineLearning\ml_library\please.txt)");
+
+    auto* data = (float*)malloc(sizeof(int) * model->d[0]);
+    for(int i = 0 ; i < model->d[0] ; i+=1){
+        data[i] = 0.25f;
+    }
+
+    float* pred = predict_mlp_model_classification(model, data );
+    printf("%d %lf //// %d  %lf\n", 0 , pred[0] , 1 , pred[1]);
+    destroy_mlp_prediction(pred);
+    free(data);
+    destroy_mlp_model(model);
 }
