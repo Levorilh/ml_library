@@ -25,6 +25,7 @@ double Centroid::distance_to(const double *data_line) {
     double sum = 0.;
     for (int i = 0; i < coord_count; i++) {
         sum += pow((coords[i] - data_line[i]), 2);
+        cout << "test sum " << sum << endl;
     }
 
 //    cout << "distance from [" << coords[0] << " " << coords[1] << " " << coords[2] << " " << coords[3] << "] to ["

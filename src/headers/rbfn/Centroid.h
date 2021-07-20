@@ -8,7 +8,7 @@
 #include "../main.h"
 #include <vector>
 
-DLLEXPORT class Centroid {
+class Centroid {
 public:
     Centroid();
     Centroid(int label, double *coords, int coord_count);

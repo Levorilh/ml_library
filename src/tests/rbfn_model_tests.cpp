@@ -6,42 +6,42 @@
 
 void test_rbfn(){
     int input_dim = 2;
-    int samples_count = 10;
+    int samples_count = 4;
     int num_classes = 2;
-    int k = 2;
+    int k = 4;
+    bool naif = true;
 
     double * flatenned_input = (double*)malloc(sizeof(double)*samples_count*input_dim);
-    double input[] =  {-3., 3., -3., 2., -4., 2., -4., 3., -3.5, 3.5, 4., 1., 5., 1., 4., 0.5, 5., 0.5, 4.5, 1.5};
-            //{0., 0., 1., 1., 0., 1., 1., 0., 0., 0., 1., 1., 0., 1., 1., 0.};
+    double input[] =  //{-3., 3., -3., 2., -4., 2., -4., 3., -3.5, 3.5, 4., 1., 5., 1., 4., 0.5, 5., 0.5, 4.5, 1.5};
+            {0., 0., 1., 1., 0., 1., 1., 0.};
     for(int i = 0; i < samples_count*input_dim; i++){
         flatenned_input[i] = input[i];
     }
     double * flatenned_output = (double*)malloc(sizeof(double)*samples_count*num_classes);
-    double output[] =  {1., 0., 1., 0., 1., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 1., 0., 1., 0., 1.};
-            //{1., 0., 0., 1., 1., 0., 0., 1., 0., 0., 1., 1., 0., 1., 1., 0.};
+    double output[] =  //{1., 0., 1., 0., 1., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 1., 0., 1., 0., 1.};
+            {1., 0., 1., 0., 0., 1., 0., 1.};
     for(int i = 0; i < samples_count*num_classes; i++){
         flatenned_output[i] = output[i];
     }
     double * test_input = (double*)malloc(sizeof(double)*input_dim);
-    double tinput[] = {-5., 4.};
-            //{1., 1.};
+    double tinput[] = //{-5., 4.};
+            {0., 1.};
     for(int i = 0; i < input_dim; i++){
         test_input[i] = tinput[i];
     }
     double * test_output_expected = (double*)malloc(sizeof(double)*num_classes);
-    double toutput[] = {1., 0.};
-            //{0., 1.};
+    double toutput[] = //{1., 0.};
+            {0., 1.};
     for(int i = 0; i < num_classes; i++){
         test_output_expected[i] = toutput[i];
     }
 
     RBF* model = create_rbfn_model(input_dim,num_classes, k);
-    train_rbfn_model(model,flatenned_input,samples_count,flatenned_output);
+    train_rbfn_model(model,flatenned_input,samples_count,flatenned_output,naif);
     double * rslt = predict_rbfn(model,test_input);
 
-    for(int i =0; i < num_classes; i++){
-        cout << "predict classe [" << i <<"] : " << rslt[i] << " | expected : " << test_output_expected[i] << endl;
-    }
+    cout << "expected [0] = " << toutput[0] << endl;
+    cout << "expected [1] = " << toutput[1] << endl;
 
     free(rslt);
     free(flatenned_input);

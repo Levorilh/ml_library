@@ -13,14 +13,16 @@ double mean(vector<double*> group,int coord_to_mean) {
     return mean;
 }
 
-Centroid** init_kmeans(const int cluster_count, double** dataset , const int dataset_size, const int input_dim){
+Centroid** init_kmeans(const int cluster_count, double** dataset , const int dataset_size, const int input_dim, bool naif){
     Centroid ** centroids = (Centroid **)malloc(sizeof(Centroid *) * cluster_count);//new Centroid *[cluster_count];
     for (int i = 0; i < cluster_count; i++) {
         centroids[i] = (Centroid *)malloc(sizeof(Centroid));
         double * dataset_row_copy = (double*)malloc(sizeof(double)*input_dim);
         int random_index = rand() % dataset_size;
-        for(int i = 0; i < input_dim; i++){
-            dataset_row_copy[i] = dataset[random_index][i];
+        for(int j = 0; j < input_dim; j++){
+            if (naif)
+                random_index = i;
+            dataset_row_copy[j] = dataset[random_index][j];
         }
         centroids[i] = new Centroid(i, dataset_row_copy/*dataset[rand() % dataset_size]*/, input_dim);
     }
@@ -28,8 +30,8 @@ Centroid** init_kmeans(const int cluster_count, double** dataset , const int dat
     return centroids;
 }
 
-Centroid** train_kmeans(double **X, int len_X,const int input_dim,const int k,const int max_iters) {
-    Centroid** clusters = init_kmeans(k , X , len_X , input_dim);
+Centroid** train_kmeans(double **X, int len_X,const int input_dim,const int k, bool naif ,const int max_iters) {
+    Centroid** clusters = init_kmeans(k , X , len_X , input_dim, naif);
 
     bool converged = false;
     int current_iter = 0;
@@ -53,10 +55,9 @@ Centroid** train_kmeans(double **X, int len_X,const int input_dim,const int k,co
             clustered_data[label_min_distance].push_back(current_elem);
 //            cout << label_min_distance << endl;
         }
-
-        printf("points pour cluster 1 : %llu\n" , clustered_data[0].size() );
-        printf("points pour cluster 2 : %llu\n" , clustered_data[1].size() );
-        //printf("points pour cluster 3 : %llu\n" , clustered_data[2].size() );
+        for(int i = 0; i < k ; i++){
+            cout << "points pour cluster " << i <<" : " << clustered_data[0].size() << endl;
+        }
         gap = 0.;
         for(int i = 0; i < k ; i +=1){
             for(int j = 0; j < clusters[i]->coord_count ; j+=1){
@@ -83,19 +84,21 @@ Centroid** train_kmeans(double **X, int len_X,const int input_dim,const int k,co
 
 double *predict_kmeans(Centroid **clusters, const int k, const double *X) {
 
-    auto* prediction = new double[k];
+    double* prediction = (double*)malloc(sizeof(double) * k);
 
     for(int i = 0 ; i < k ; i+=1){
 
         double distance  = clusters[i]->distance_to(X);
 
-        prediction[i] = 1. / exp(-distance / pow(clusters[i]->deviation,2));
+        prediction[i] = 1. / exp(-distance / 10);//pow(clusters[i]->deviation,2));
+        cout << "test predict kmean "<<i<<" : " << prediction[i] << endl;
+        //cout << "test : " << clusters[i]->distance_to(X) << endl;
     }
     return prediction;
 }
 
-DLLEXPORT void destroy_rbfn_prediction(const double* prediction){
-    delete prediction;
+DLLEXPORT void destroy_rbfn_prediction(double* prediction){
+    free(prediction);
 }
 
 DLLEXPORT RBF * create_rbfn_model(int input_dim, int num_classes, int k){
@@ -111,8 +114,8 @@ DLLEXPORT RBF * create_rbfn_model(int input_dim, int num_classes, int k){
         rbf->clusters[i] = (Centroid *)malloc(sizeof(Centroid));
     }
 
-    rbf->W = (double**)malloc(sizeof(double*) * input_dim);
-    for(int i = 0; i < input_dim; i++){
+    rbf->W = (double**)malloc(sizeof(double*) * k);
+    for(int i = 0; i < k; i++){
         rbf->W[i] = (double*)malloc(sizeof(double) * num_classes);
         for(int j = 0; j < num_classes; j++){
             rbf->W[i][j] = 0;
@@ -138,6 +141,7 @@ DLLEXPORT void train_rbfn_model(RBF * model,
                       double *flattened_dataset_inputs,
                       int samples_count,
                       double *flattened_dataset_expected_outputs,
+                      bool naif,
                       const int max_iters) {
     model->samples_count = samples_count;
 
@@ -156,19 +160,19 @@ DLLEXPORT void train_rbfn_model(RBF * model,
         }
     }
 
-    model->clusters = train_kmeans(dataset_inputs, samples_count, model->input_dim, model->k, max_iters);
+    model->clusters = train_kmeans(dataset_inputs, samples_count, model->input_dim, model->k, naif, max_iters);
 
-    MatrixXd X(samples_count, model->input_dim);
+    MatrixXd X(samples_count, model->k);
     for (int i = 0; i < samples_count; i++) {
 
         auto* RBF_X = predict_kmeans(model->clusters, model->k, dataset_inputs[i]);
-        for(int j = 0 ; j < model->input_dim; j += 1){
+        for(int j = 0 ; j < model->k; j += 1){
             X(i,j) = RBF_X[j];
             cout <<"X[" << i << ":" << j << "]=" << X(i,j) << endl;
         }
         destroy_rbfn_prediction(RBF_X);
     }
-
+    //cout << "Sondage cluster train : " << model->clusters[0]->coords[0] << endl;
     MatrixXd Y(samples_count, model->num_classes);
     for (int i = 0; i < samples_count; i++) {
         for (int j = 0; j < model->num_classes; j++) { // pourquoi k ? devrais être num_clases ?
@@ -177,7 +181,7 @@ DLLEXPORT void train_rbfn_model(RBF * model,
         }
     }
     //(input_dim / sample_count) * (sample_cout / input_dim) * (input_dim / sample_count) * (sample_count / num_classes) = (input_dim / num_classes)
-    MatrixXd W = ((X.transpose() * X).inverse() * X.transpose()) * Y;
+    MatrixXd W = (((X.transpose() * X).inverse()) * X.transpose()) * Y;
     //cout << "W rows = " << W.rows() << "; clos = " << W.cols() << ";" << endl;
     for(int i=0; i < W.rows(); i++){
         for(int j=0; j < W.cols(); j++){
@@ -196,17 +200,17 @@ DLLEXPORT void train_rbfn_model(RBF * model,
 
 DLLEXPORT double *predict_rbfn(RBF *model, double *flattened_dataset_inputs) {
     auto* prediction = (double*)malloc(sizeof(double) * model->num_classes);
-    MatrixXd X(1, model->input_dim);
-    //cout << "cluster 0 :" << model->clusters[0] << endl;
+    MatrixXd X(1, model->k);
+    //cout << "Sondage cluster predict : " << model->clusters[0]->coords[0] << endl;
     auto* RBF_X = predict_kmeans(model->clusters, model->k, flattened_dataset_inputs);
-    for(int j = 0 ; j < model->input_dim; j += 1){
+    for(int j = 0 ; j < model->k; j += 1){
         X(0,j) = RBF_X[j];
         cout << "RBF X ["<<j<<"] : "<< RBF_X[j]<<endl;
     }
     free(RBF_X);
 
-    MatrixXd W(model->input_dim, model->num_classes);
-    for(int i =0; i < model->input_dim; i++){
+    MatrixXd W(model->k, model->num_classes);
+    for(int i =0; i < model->k; i++){
         for(int j =0; j < model->num_classes; j++){
             W(i,j)=model->W[i][j];
         }
@@ -215,6 +219,7 @@ DLLEXPORT double *predict_rbfn(RBF *model, double *flattened_dataset_inputs) {
     MatrixXd rslt = X * W;
     for(int i =0; i < rslt.cols(); i++){
         prediction[i] = rslt(0,i);
+        cout << "predict["<<i<<"] = "<<prediction[i]<<endl;
     }
 
     return prediction;
