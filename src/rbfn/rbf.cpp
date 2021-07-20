@@ -91,8 +91,6 @@ double *predict_kmeans(Centroid **clusters, const int k, const double *X) {
         double distance  = clusters[i]->distance_to(X);
 
         prediction[i] = 1. / exp(-distance / 10);//pow(clusters[i]->deviation,2));
-        cout << "test predict kmean "<<i<<" : " << prediction[i] << endl;
-        //cout << "test : " << clusters[i]->distance_to(X) << endl;
     }
     return prediction;
 }
@@ -168,7 +166,7 @@ DLLEXPORT void train_rbfn_model(RBF * model,
         auto* RBF_X = predict_kmeans(model->clusters, model->k, dataset_inputs[i]);
         for(int j = 0 ; j < model->k; j += 1){
             X(i,j) = RBF_X[j];
-            cout <<"X[" << i << ":" << j << "]=" << X(i,j) << endl;
+            //cout <<"X[" << i << ":" << j << "]=" << X(i,j) << endl;
         }
         destroy_rbfn_prediction(RBF_X);
     }
@@ -186,7 +184,7 @@ DLLEXPORT void train_rbfn_model(RBF * model,
     for(int i=0; i < W.rows(); i++){
         for(int j=0; j < W.cols(); j++){
             model->W[i][j] = W(i, j);
-            cout << "W[" << i << ":" << j << "]=" << W(i, j) << endl;
+            //cout << "W[" << i << ":" << j << "]=" << W(i, j) << endl;
         }
     }
 
@@ -205,7 +203,7 @@ DLLEXPORT double *predict_rbfn(RBF *model, double *flattened_dataset_inputs) {
     auto* RBF_X = predict_kmeans(model->clusters, model->k, flattened_dataset_inputs);
     for(int j = 0 ; j < model->k; j += 1){
         X(0,j) = RBF_X[j];
-        cout << "RBF X ["<<j<<"] : "<< RBF_X[j]<<endl;
+        //cout << "RBF X ["<<j<<"] : "<< RBF_X[j]<<endl;
     }
     free(RBF_X);
 
@@ -219,8 +217,80 @@ DLLEXPORT double *predict_rbfn(RBF *model, double *flattened_dataset_inputs) {
     MatrixXd rslt = X * W;
     for(int i =0; i < rslt.cols(); i++){
         prediction[i] = rslt(0,i);
-        cout << "predict["<<i<<"] = "<<prediction[i]<<endl;
+        //cout << "predict["<<i<<"] = "<<prediction[i]<<endl;
     }
 
     return prediction;
+}
+
+DLLEXPORT void save_rbf_model(RBF * model, const char* path){
+    FILE* fp = fopen( path, "w" );
+    fprintf(fp, "%d;%d;%d;%d\n", model->input_dim, model->num_classes, model->k, model->samples_count);
+    for(int i = 0; i < model->k; i++){
+        for(int j = 0; j < model->num_classes; j++){
+            fprintf(fp, "%f\n",model->W[i][j]);
+        }
+    }
+    for(int i = 0; i < model->k; i++){
+        fprintf(fp, "%d;%d\n", model->clusters[i]->label,  model->clusters[i]->coord_count);
+        for(int j = 0; j < model->clusters[i]->coord_count; j++){
+            fprintf(fp, "%f\n",model->clusters[i]->coords[j]);
+        }
+    }
+    fclose(fp);
+}
+
+DLLEXPORT RBF * load_rbf_model(const char* path){
+    const int maxLength = 250;
+    FILE *fp;
+    fp = fopen(path , "r");
+    if(!fp){
+        return nullptr;
+    }
+    char* model_to_string = (char*)malloc(sizeof(char) * maxLength);
+    int * len = (int*)malloc(sizeof(int));
+
+    fgets(model_to_string, maxLength,fp);
+    char ** s = split(model_to_string, len);
+    int input_dim=strtol(s[0], nullptr, 10);
+    int num_classes=strtol(s[1], nullptr, 10);
+    int k=strtol(s[2], nullptr, 10);
+
+    RBF * result = create_rbfn_model(input_dim, num_classes, k);
+
+    result->samples_count=strtol(s[3], nullptr, 10);
+
+    free(s[0]);
+    free(s[1]);
+    free(s[2]);
+    free(s[3]);
+    free(s);
+
+    for(int i = 0; i < result->k; i++){
+        for(int j = 0; j < result->num_classes; j++){
+            fgets(model_to_string, maxLength,fp);
+            result->W[i][j] = strtod(model_to_string, nullptr);
+        }
+    }
+
+    for(int i = 0; i < result->k; i++){
+        fgets(model_to_string, maxLength,fp);
+        char ** s = split(model_to_string, len);
+        result->clusters[i]->label = strtol(s[0], nullptr, 10);
+        result->clusters[i]->coord_count = strtol(s[1], nullptr, 10);
+        free(s[0]);
+        free(s[1]);
+        free(s);
+        result->clusters[i]->coords = (double*)malloc(sizeof(double) * result->clusters[i]->coord_count);
+        for(int j = 0; j < result->clusters[i]->coord_count; j++){
+            fgets(model_to_string, maxLength,fp);
+            result->clusters[i]->coords[j] = strtod(model_to_string, nullptr);
+        }
+    }
+
+    fclose(fp);
+    free(model_to_string);
+    free(len);
+    return result;
+
 }

@@ -13,5 +13,6 @@ using namespace std;
 void test_get_distance_rbfn();
 void test_kmeans_rbfn();
 void test_rbfn();
+void test_save_load_rbf();
 
 #endif //ML_LIBRARY_RBFN_MODEL_TEST_H

@@ -38,7 +38,7 @@ DLLEXPORT void train_rbfn_model(RBF* model,
                       double *flattened_dataset_expected_outputs,
                       bool naif=false,
                       const int max_iters=100);
-
-
+DLLEXPORT void save_rbf_model(RBF * model, const char* path);
+DLLEXPORT RBF * load_rbf_model(const char* path);
 
 #endif //ML_LIBRARY_RBF_H

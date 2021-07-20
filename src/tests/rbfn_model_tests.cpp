@@ -4,7 +4,103 @@
 
 #include "../headers/tests/rbfn_model_test.h"
 
+void test_save_load_rbf(){
+    int input_dim = 2;
+    int samples_count = 4;
+    int num_classes = 2;
+    int k = 4;
+    bool naif = true;
+
+    double * flatenned_input = (double*)malloc(sizeof(double)*samples_count*input_dim);
+    double input[] =  {0., 0., 1., 1., 0., 1., 1., 0.};
+    for(int i = 0; i < samples_count*input_dim; i++){
+        flatenned_input[i] = input[i];
+    }
+    double * flatenned_output = (double*)malloc(sizeof(double)*samples_count*num_classes);
+    double output[] =  {1., 0., 1., 0., 0., 1., 0., 1.};
+    for(int i = 0; i < samples_count*num_classes; i++){
+        flatenned_output[i] = output[i];
+    }
+    double * test_input = (double*)malloc(sizeof(double)*input_dim);
+    double tinput[] = {1., 1.};
+    for(int i = 0; i < input_dim; i++){
+        test_input[i] = tinput[i];
+    }
+    double * test_output_expected = (double*)malloc(sizeof(double)*num_classes);
+    double toutput[] = {1., 0.};
+    for(int i = 0; i < num_classes; i++){
+        test_output_expected[i] = toutput[i];
+    }
+
+    RBF* model = create_rbfn_model(input_dim,num_classes, k);
+    train_rbfn_model(model,flatenned_input,samples_count,flatenned_output,naif);
+    double * rslt1 = predict_rbfn(model,test_input);
+
+    char* path = "C:\\Users\\N\\Desktop\\test_rbf_model.txt";
+    save_rbf_model(model, path);
+    destroy_rbfn_model(model);
+
+    model = load_rbf_model(path);
+    double * rslt2 = predict_rbfn(model,test_input);
+
+    for(int i = 0; i < num_classes; i++){
+        cout << "conpare rslt predict:" << rslt1[i] << " : " << rslt2[i] << endl;
+    }
+
+    free(flatenned_input);
+    free(flatenned_output);
+    free(test_input);
+    free(test_output_expected);
+}
+
 void test_rbfn(){
+    int input_dim = 2;
+    int samples_count = 3;
+    int num_classes = 3;
+    int k = 3;
+    bool naif = true;
+
+    double * flatenned_input = (double*)malloc(sizeof(double)*samples_count*input_dim);
+    double input[] =  {0.,0.,1.,1.,2.,0.};
+    for(int i = 0; i < samples_count*input_dim; i++){
+        flatenned_input[i] = input[i];
+    }
+    double * flatenned_output = (double*)malloc(sizeof(double)*samples_count*num_classes);
+    double output[] =  //{1., 0., 1., 0., 1., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 1., 0., 1., 0., 1.};
+            {1., 0., 0., 0., 1., 0., 0., 0., 1.};
+    for(int i = 0; i < samples_count*num_classes; i++){
+        flatenned_output[i] = output[i];
+    }
+    double * test_input = (double*)malloc(sizeof(double)*input_dim);
+    double tinput[] = //{-5., 4.};
+            {0., 0.};
+    for(int i = 0; i < input_dim; i++){
+        test_input[i] = tinput[i];
+    }
+    double * test_output_expected = (double*)malloc(sizeof(double)*num_classes);
+    double toutput[] = //{1., 0.};
+            {1., 0., 0.};
+    for(int i = 0; i < num_classes; i++){
+        test_output_expected[i] = toutput[i];
+    }
+
+    RBF* model = create_rbfn_model(input_dim,num_classes, k);
+    train_rbfn_model(model,flatenned_input,samples_count,flatenned_output,naif);
+    double * rslt = predict_rbfn(model,test_input);
+
+    for(int i = 0 ; i < num_classes; i++){
+        cout << "expected ["<<i<<"] = " << toutput[i] << endl;
+    }
+
+
+    free(rslt);
+    free(flatenned_input);
+    free(flatenned_output);
+    free(test_input);
+    free(test_output_expected);
+}
+
+void test_rbfn_XOR(){
     int input_dim = 2;
     int samples_count = 4;
     int num_classes = 2;
